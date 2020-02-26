@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".landingpageActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/register_activity_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            tools:layout_editor_absoluteX="96dp"
+            tools:layout_editor_absoluteY="187dp" />
+
+        <EditText
+            android:id="@+id/register_activity_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="password"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="98dp"
+            tools:layout_editor_absoluteY="242dp" />
+
+        <Button
+            android:id="@+id/register_activity_register_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="REGISTER" />
+
+        <TextView
+            android:id="@+id/register_activity_landingpage_link"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="Go back to login page"
+            android:textSize="16dip" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
