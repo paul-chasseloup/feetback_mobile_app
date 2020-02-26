@@ -1,4 +1,4 @@
-package paulchasseloup.feetback_layout;
+package paulchasseloup.feetback_mobile_app;
 
         import androidx.appcompat.app.AppCompatActivity;
 
