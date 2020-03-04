@@ -11,6 +11,12 @@
         android:gravity="bottom|center"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/labelMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
         <EditText
             android:id="@+id/activity_main_email"
             android:layout_width="fill_parent"
@@ -38,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
+            android:onClick="Login"
             android:text="@string/login" />
 
         <TextView
@@ -48,6 +55,7 @@
             android:clickable="true"
             android:gravity="center"
             android:text="No account yet? Create one"
+            android:onClick="Register"
             android:textSize="16dip" />
 
     </LinearLayout>

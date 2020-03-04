@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".landingpageActivity">
+    tools:context=".registerActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,9 +11,33 @@
         android:gravity="bottom|center"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/register_activity_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resgister here!" />
+
+        <EditText
+            android:id="@+id/register_activity_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Name"
+            tools:layout_editor_absoluteX="96dp"
+            tools:layout_editor_absoluteY="187dp" />
+
+        <EditText
+            android:id="@+id/register_activity_lastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Last Name"
+            tools:layout_editor_absoluteX="96dp"
+            tools:layout_editor_absoluteY="187dp" />
+
         <EditText
             android:id="@+id/register_activity_email"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:hint="Email"
@@ -38,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
+            android:onClick="RegisterUser"
             android:text="REGISTER" />
 
         <TextView

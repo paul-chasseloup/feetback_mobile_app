@@ -4,10 +4,19 @@ package paulchasseloup.feetback_mobile_app;
 
         import android.content.Intent;
         import android.os.Bundle;
+        import android.util.Log;
         import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.TextView;
+
+        import com.apollographql.apollo.ApolloCall;
+        import com.apollographql.apollo.api.Response;
+        import com.apollographql.apollo.exception.ApolloException;
+        import com.apollographql.apollo.sample.LoginQuery;
+
+        import org.jetbrains.annotations.NotNull;
+
 
 public class landingpageActivity extends AppCompatActivity {
 
@@ -15,6 +24,9 @@ public class landingpageActivity extends AppCompatActivity {
     private EditText mPassword;
     private Button mLoginBtn;
     private TextView mRegisterLink;
+    private TextView labelMessage;
+
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +34,10 @@ public class landingpageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mEmail = (EditText) findViewById(R.id.activity_main_email);
         mPassword = (EditText) findViewById(R.id.activity_main_password);
-        mLoginBtn = (Button) findViewById(R.id.activity_main_login_btn);
+        labelMessage = (TextView) findViewById(R.id.labelMessage);
         mRegisterLink = (TextView) findViewById(R.id.activity_main_register_link);
 
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                /// put here a method to check if the Email/password is set in the DB
-
-                Intent dataActivity = new Intent(landingpageActivity.this, dataActivity.class);
-                startActivity(dataActivity);
-            }
-        });
+        labelMessage.setText("Welcome!");
 
         mRegisterLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,5 +46,38 @@ public class landingpageActivity extends AppCompatActivity {
                 startActivity(registerActivity);
             }
         });
+
     }
+
+    public void Login(View view) {
+        ApolloConnector.setupApollo().query(
+                LoginQuery
+                        .builder()
+                        .email(mEmail.getText().toString())
+                        .password(mPassword.getText().toString())
+                        .build())
+                .enqueue(new ApolloCall.Callback<LoginQuery.Data>() {
+
+                    @Override
+                    public void onResponse(@NotNull Response<LoginQuery.Data> response) {
+
+                        labelMessage.setText(response.data().login().message());
+                        if (response.data().login().token() != null) {
+                            Intent dataActivity = new Intent(landingpageActivity.this, dataActivity.class);
+                            dataActivity.putExtra("userId", response.data().login().user().id().toString());
+                            startActivity(dataActivity);
+                        }
+                        Log.d(TAG, "Response: " + response.data().login());
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                        labelMessage.setText("Server Error!");
+                        Log.d(TAG, "Exception " + e.getMessage(), e);
+                    }
+                });
+
+    }
+
 }
