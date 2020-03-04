@@ -1,0 +1,15 @@
+query Login ($email: String!, $password: String!){
+        login(email: $email, password: $password){
+        status, message, token, user {
+        id,
+          name,
+          lastname,
+          email,
+          password,
+          podiatrist,
+          currentPodiatrist,
+          registerDate,
+          lastMeetingDate
+        }
+     }
+ }

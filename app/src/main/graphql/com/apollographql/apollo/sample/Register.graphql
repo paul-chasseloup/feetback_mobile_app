@@ -1,0 +1,13 @@
+mutation Register($user:UserInput){
+        register(user:$user){
+        status,message,user{
+            id,
+            name,
+            lastname,
+            email,
+            password,
+            podiatrist,
+            registerDate
+            }
+        }
+}

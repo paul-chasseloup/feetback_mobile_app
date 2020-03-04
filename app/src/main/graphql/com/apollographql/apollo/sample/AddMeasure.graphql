@@ -1,0 +1,15 @@
+mutation AddMeasure ($measure: MeasureInput) {
+  addMeasure(measure:$measure){
+    status, message, measure{
+     patientId,sensors {
+        number,
+        posX,
+        posY,
+        averagePressureS,
+        minPressureS,
+        maxPressureS
+    }
+    },
+  }
+}
+
