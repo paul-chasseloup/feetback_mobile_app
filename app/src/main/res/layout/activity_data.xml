@@ -26,7 +26,15 @@
             android:text="ToggleButton"
             android:textAlignment="center"
             android:textOff="START"
-            android:textOn="STOP" />
+            android:textOn="SEND" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="CANCEL" />
 
         <TextView
             android:id="@+id/disconnectLink"

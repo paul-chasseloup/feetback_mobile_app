@@ -1,34 +1,31 @@
 package paulchasseloup.feetback_mobile_app;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.apollographql.apollo.sample.AddMeasureMutation;
-import com.apollographql.apollo.sample.RegisterMutation;
 import com.apollographql.apollo.sample.type.MeasureInput;
 import com.apollographql.apollo.sample.type.SensorInput;
-import com.apollographql.apollo.sample.type.UserInput;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +35,7 @@ import java.util.List;
 public class dataActivity extends AppCompatActivity {
 
     private ToggleButton mStartStopBtn;
+    private Button mCancelBtn;
     private TextView mDisconnect;
 
     ArrayList<String> listSensors1 = new ArrayList<>();
@@ -57,6 +55,7 @@ public class dataActivity extends AppCompatActivity {
         mStartStopBtn = (ToggleButton) findViewById(R.id.toggleButton);
         mDisconnect = (TextView) findViewById(R.id.disconnectLink);
         mChronometer = (Chronometer) findViewById(R.id.chronometer);
+        mCancelBtn = (Button) findViewById(R.id.cancelButton);
 
         listSensors1.addAll(Arrays.asList("1","2"));
         listSensors2.addAll(Arrays.asList("2","3"));
@@ -73,10 +72,10 @@ public class dataActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     mChronometer.start();
-                    // here the method to collect the data from the device
+                    /// here the method to collect the data from the device
                 } else {
                     mChronometer.setBase(SystemClock.elapsedRealtime());
-                    // here the method to to stop the sampling and to send the DB
+                    /// here the method to to stop the sampling and to send the DB
                     try {
                         processData();
                     } catch (IOException e) {
@@ -86,11 +85,18 @@ public class dataActivity extends AppCompatActivity {
             }
         });
 
+        mCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mChronometer.setBase(SystemClock.elapsedRealtime());
+            }
+        });
+
         mDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                /// put here a method to check if the Email/password is set in the DB
+                /// put here a method to disconect from DB
 
                 Intent landingpageActivity = new Intent(dataActivity.this, landingpageActivity.class);
                 startActivity(landingpageActivity);
