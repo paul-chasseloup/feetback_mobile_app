@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient;
 public class ApolloConnector {
 
     // localhost doesn't work on the emulator
-    private static final String BASE_URL = "http://10.4.178.143:4000/graphql";
+    private static final String BASE_URL = "http://10.7.16.106:4000/graphql";
 
     public static ApolloClient setupApollo(){
 

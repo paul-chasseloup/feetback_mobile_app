@@ -5,7 +5,6 @@ query Login ($email: String!, $password: String!){
           name,
           lastname,
           email,
-          password,
           podiatrist,
           currentPodiatrist,
           registerDate,

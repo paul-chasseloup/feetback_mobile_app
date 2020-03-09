@@ -25,11 +25,15 @@ import com.apollographql.apollo.sample.type.UserInput;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+//import com.opencsv.CSVWriter;
 
 public class dataActivity extends AppCompatActivity {
 
@@ -94,7 +98,7 @@ public class dataActivity extends AppCompatActivity {
         });
     }
 
-    SensorInput findValues(ArrayList<String> sensors) {
+    SensorInput findValues(ArrayList<String> sensors, int num) {
         Double min = Double.MAX_VALUE;
         Double max = Double.MIN_VALUE;
         Double sum = 0.0;
@@ -111,7 +115,7 @@ public class dataActivity extends AppCompatActivity {
 
         final SensorInput sensorInput = SensorInput
                 .builder()
-                .numberInput(Input.optional(1))
+                .numberInput(Input.optional(num))
                 .posXInput(Input.optional(0.0))
                 .posYInput(Input.optional(0.0))
                 .minPressureS(min)
@@ -121,20 +125,49 @@ public class dataActivity extends AppCompatActivity {
         return sensorInput;
     }
 
+//    void writeCsv() {
+//        String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+//        String fileName = "SensorsData.csv";
+//        String filePath = baseDir + File.separator + fileName;
+//        File f = new File(filePath);
+//        CSVWriter writer;
+//
+//        // File exist
+//        if(f.exists()&&!f.isDirectory())
+//        {
+//            mFileWriter = new FileWriter(filePath, true);
+//            writer = new CSVWriter(mFileWriter);
+//        }
+//        else
+//        {
+//            writer = new CSVWriter(new FileWriter(filePath));
+//        }
+//    }
 
     void processData() throws IOException {
 
         List<SensorInput> sensorList = new ArrayList<>();
 
-        sensorList.add(findValues(listSensors1));
-        sensorList.add(findValues(listSensors2));
-        sensorList.add(findValues(listSensors3));
-        sensorList.add(findValues(listSensors4));
-        sensorList.add(findValues(listSensors5));
+        sensorList.add(findValues(listSensors1, 1));
+        sensorList.add(findValues(listSensors2, 2));
+        sensorList.add(findValues(listSensors3, 3));
+        sensorList.add(findValues(listSensors4, 4));
+        sensorList.add(findValues(listSensors5, 5));
+
+//        // Write CSV file
+//        PrintWriter writer = new PrintWriter("sensorsData.csv");
+//        writer.println(Arrays.asList("pacientId:", userId));
+//        writer.println(Arrays.asList("duration:" ));
+//        writer.println(listSensors1);
+//        writer.println(listSensors2);
+//        writer.println(listSensors3);
+//        writer.println(listSensors4);
+//        writer.println(listSensors5);
+//        writer.close();
 
         final MeasureInput measureInput = MeasureInput
                 .builder()
-//                .patientId()
+                .patientId(userId)
                 .sensors(sensorList)
                 .build();
 
@@ -150,14 +183,7 @@ public class dataActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(@NotNull Response<AddMeasureMutation.Data> response) {
-//                        message = response.data().register().message();
-//                        Log.d(TAG, "Response: " + response.data().register());
-//                        if (response.data().register().status()) {
-//                            Intent landingpageActivity = new Intent(registerActivity.this, landingpageActivity.class);
-//                            startActivity(landingpageActivity);
-//                        } else {
-//                            mMessage.setText(message);
-//                        }
+                        Log.d(TAG, "Response: " + response.data().addMeasure());
                     }
 
                     @Override
