@@ -1,28 +1,25 @@
 package paulchasseloup.feetback_mobile_app;
 
-        import androidx.appcompat.app.AppCompatActivity;
-
         import android.content.Intent;
-        import android.os.Bundle;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.TextView;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
-        import com.apollographql.apollo.ApolloCall;
-        import com.apollographql.apollo.api.Response;
-        import com.apollographql.apollo.exception.ApolloException;
-        import com.apollographql.apollo.sample.LoginQuery;
+import androidx.appcompat.app.AppCompatActivity;
 
-        import org.jetbrains.annotations.NotNull;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
+import com.apollographql.apollo.sample.LoginQuery;
 
+import org.jetbrains.annotations.NotNull;
 
 public class landingpageActivity extends AppCompatActivity {
 
     private EditText mEmail;
     private EditText mPassword;
-    private Button mLoginBtn;
     private TextView mRegisterLink;
     private TextView labelMessage;
 
@@ -46,7 +43,6 @@ public class landingpageActivity extends AppCompatActivity {
                 startActivity(registerActivity);
             }
         });
-
     }
 
     public void Login(View view) {
@@ -77,7 +73,5 @@ public class landingpageActivity extends AppCompatActivity {
                         Log.d(TAG, "Exception " + e.getMessage(), e);
                     }
                 });
-
     }
-
 }
