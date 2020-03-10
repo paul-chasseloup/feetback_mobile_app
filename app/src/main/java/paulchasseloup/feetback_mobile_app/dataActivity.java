@@ -1,6 +1,9 @@
 package paulchasseloup.feetback_mobile_app;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -12,12 +15,15 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.FileUpload;
 import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.apollographql.apollo.sample.AddMeasureMutation;
+import com.apollographql.apollo.sample.UploadCSVMutation;
 import com.apollographql.apollo.sample.type.MeasureInput;
 import com.apollographql.apollo.sample.type.SensorInput;
 
@@ -30,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//import com.opencsv.CSVWriter;
+import com.opencsv.CSVWriter;
 
 public class dataActivity extends AppCompatActivity {
 
@@ -47,6 +53,13 @@ public class dataActivity extends AppCompatActivity {
     private final String TAG = "DataActivity";
     private String userId;
     private Chronometer mChronometer;
+
+    // Storage Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +90,7 @@ public class dataActivity extends AppCompatActivity {
                     mChronometer.setBase(SystemClock.elapsedRealtime());
                     /// here the method to to stop the sampling and to send the DB
                     try {
-                        processData();
+                        writeCsv();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -131,26 +144,79 @@ public class dataActivity extends AppCompatActivity {
         return sensorInput;
     }
 
-//    void writeCsv() {
-//        String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-//        String fileName = "SensorsData.csv";
-//        String filePath = baseDir + File.separator + fileName;
-//        File f = new File(filePath);
-//        CSVWriter writer;
-//
-//        // File exist
-//        if(f.exists()&&!f.isDirectory())
-//        {
-//            mFileWriter = new FileWriter(filePath, true);
-//            writer = new CSVWriter(mFileWriter);
-//        }
-//        else
-//        {
-//            writer = new CSVWriter(new FileWriter(filePath));
-//        }
-//    }
+    public void verifyStoragePermissions() {
+        // Check if we have write permission
+        Activity activity = (Activity) this;
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-    void processData() throws IOException {
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+    void writeCsv() throws IOException {
+        verifyStoragePermissions();
+        String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+        String fileName = "SensorsData.csv";
+        String filePath = baseDir + File.separator + fileName;
+        final File f = new File(filePath);
+        CSVWriter writer;
+        FileWriter mFileWriter;
+
+        // File exist
+        if(f.exists()&&!f.isDirectory())
+        {
+                mFileWriter = new FileWriter(filePath, true);
+                writer = new CSVWriter(mFileWriter);
+        }
+        else
+        {
+                writer = new CSVWriter(new FileWriter(filePath));
+        }
+
+        writer.writeNext(listSensors1.toArray(new String[listSensors1.size()]));
+        writer.writeNext(listSensors2.toArray(new String[listSensors2.size()]));
+        writer.writeNext(listSensors3.toArray(new String[listSensors3.size()]));
+        writer.writeNext(listSensors4.toArray(new String[listSensors4.size()]));
+        writer.writeNext(listSensors5.toArray(new String[listSensors5.size()]));
+        writer.close();
+
+        final  Input<FileUpload> fileInputType = Input.optional(new FileUpload("text/csv", f));
+
+        ApolloConnector.setupApollo().mutate(
+                UploadCSVMutation
+                        .builder()
+                        .fileInput(fileInputType)
+                        .build()
+        )
+                .enqueue(new ApolloCall.Callback<UploadCSVMutation.Data>() {
+
+                    @Override
+                    public void onResponse(@NotNull Response<UploadCSVMutation.Data> response) {
+                        Log.d(TAG, "Response: " + response.data().uploadCSV());
+                        try {
+                            f.delete();
+                            addMeasure(response.data().uploadCSV().fileCompleteName());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Log.d(TAG, "Server Exception " + e.getMessage(), e);
+                    }
+                });
+
+
+    }
+
+    void addMeasure(String fileCompleteName) throws IOException {
 
         List<SensorInput> sensorList = new ArrayList<>();
 
@@ -160,20 +226,10 @@ public class dataActivity extends AppCompatActivity {
         sensorList.add(findValues(listSensors4, 4));
         sensorList.add(findValues(listSensors5, 5));
 
-//        // Write CSV file
-//        PrintWriter writer = new PrintWriter("sensorsData.csv");
-//        writer.println(Arrays.asList("pacientId:", userId));
-//        writer.println(Arrays.asList("duration:" ));
-//        writer.println(listSensors1);
-//        writer.println(listSensors2);
-//        writer.println(listSensors3);
-//        writer.println(listSensors4);
-//        writer.println(listSensors5);
-//        writer.close();
-
         final MeasureInput measureInput = MeasureInput
                 .builder()
                 .patientId(userId)
+                .csv(fileCompleteName)
                 .sensors(sensorList)
                 .build();
 
@@ -190,6 +246,7 @@ public class dataActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(@NotNull Response<AddMeasureMutation.Data> response) {
                         Log.d(TAG, "Response: " + response.data().addMeasure());
+
                     }
 
                     @Override

@@ -1,0 +1,7 @@
+mutation uploadCSV($file: Upload){
+  uploadCSV(csvFile: $file){
+    status,
+    message,
+    fileCompleteName
+  }
+}

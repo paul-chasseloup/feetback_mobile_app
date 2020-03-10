@@ -20,6 +20,12 @@ android {
     }
 }
 
+apollo {
+    customTypeMapping = [
+            "Upload" : "com.apollographql.apollo.api.FileUpload"
+    ]
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -32,6 +38,8 @@ dependencies {
     implementation 'com.apollographql.apollo:apollo-runtime:1.2.1'
 //    implementation "com.apollographql.apollo:apollo-android-support:0.4.3"
     implementation 'com.squareup.okhttp3:okhttp:3.0.1'
+
+    implementation 'com.opencsv:opencsv:4.6'
 
     compileOnly 'org.jetbrains:annotations:13.0'
     testCompileOnly 'org.jetbrains:annotations:13.0'
