@@ -26,6 +26,7 @@ import com.apollographql.apollo.sample.AddMeasureMutation;
 import com.apollographql.apollo.sample.UploadCSVMutation;
 import com.apollographql.apollo.sample.type.MeasureInput;
 import com.apollographql.apollo.sample.type.SensorInput;
+import com.opencsv.CSVWriter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,8 +36,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.opencsv.CSVWriter;
 
 public class dataActivity extends AppCompatActivity {
 
@@ -86,6 +85,7 @@ public class dataActivity extends AppCompatActivity {
                 if (isChecked) {
                     mChronometer.start();
                     /// here the method to collect the data from the device
+
                 } else {
                     mChronometer.setBase(SystemClock.elapsedRealtime());
                     /// here the method to to stop the sampling and to send the DB
@@ -212,8 +212,6 @@ public class dataActivity extends AppCompatActivity {
                         Log.d(TAG, "Server Exception " + e.getMessage(), e);
                     }
                 });
-
-
     }
 
     void addMeasure(String fileCompleteName) throws IOException {
@@ -255,6 +253,4 @@ public class dataActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 }

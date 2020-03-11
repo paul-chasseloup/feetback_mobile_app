@@ -4,13 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".dataActivity">
+    tools:context=".dataActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom|center"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="217dp"
+            android:layout_height="256dp"
+            android:src="@drawable/img" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:text="TIME TO WALK !"
+            android:textSize="16dip" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:text="make a diagnosis\ntest and send it\nto your doctor \n\n\n\n"
+            android:textSize="16dip" />
 
         <Chronometer
             android:id="@+id/chronometer"
@@ -26,7 +47,9 @@
             android:text="ToggleButton"
             android:textAlignment="center"
             android:textOff="START"
-            android:textOn="SEND" />
+            android:textOn="SEND"
+            android:background="@android:color/white"
+            android:textColor="#1195EF"/>
 
         <Button
             android:id="@+id/cancelButton"
@@ -34,7 +57,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:text="CANCEL" />
+            android:text="CANCEL"
+            android:background="@android:color/white"
+            android:textColor="#1195EF"/>
 
         <TextView
             android:id="@+id/disconnectLink"
