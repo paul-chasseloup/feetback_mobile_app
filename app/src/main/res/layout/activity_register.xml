@@ -15,7 +15,7 @@
             android:id="@+id/register_activity_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Resgister here!" />
+            android:text="Register here!" />
 
         <EditText
             android:id="@+id/register_activity_name"
