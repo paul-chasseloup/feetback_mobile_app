@@ -38,7 +38,7 @@
             android:id="@+id/chronometer"
             android:layout_width="87dp"
             android:layout_height="33dp"
-            android:textColor="#004A18FF" />
+            android:textAlignment="center"/>
 
         <ToggleButton
             android:id="@+id/toggleButton"
