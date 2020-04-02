@@ -118,7 +118,7 @@ public class dataActivity extends AppCompatActivity {
                     try {
                         if (findBT()) {
                             openBT();
-                            sendData("0");
+                            sendData("1");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -128,7 +128,7 @@ public class dataActivity extends AppCompatActivity {
                     mChronometer.stop();
                     /// here the method to to stop the sampling and to send the DB
                     try {
-                        sendData("1");
+                        sendData("0");
                         closeBT();
                         writeCsv();
                     } catch (IOException e) {
