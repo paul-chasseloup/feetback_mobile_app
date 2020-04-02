@@ -88,11 +88,14 @@ public class dataActivity extends AppCompatActivity {
         mStartStopBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    mChronometer.setBase(SystemClock.elapsedRealtime());
+                    mChronometer.stop();
                     mChronometer.start();
                     /// here the method to collect the data from the device
 
                 } else {
                     mChronometer.setBase(SystemClock.elapsedRealtime());
+                    mChronometer.stop();
                     /// here the method to to stop the sampling and to send the DB
                     try {
                         writeCsv();
@@ -106,7 +109,7 @@ public class dataActivity extends AppCompatActivity {
         mCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mChronometer.setBase(SystemClock.elapsedRealtime());
+                mStartStopBtn.setChecked(false);
             }
         });
 
