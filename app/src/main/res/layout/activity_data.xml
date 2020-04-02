@@ -18,6 +18,12 @@
             android:src="@drawable/img" />
 
         <TextView
+            android:id="@+id/bluetoothMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -38,7 +44,7 @@
             android:id="@+id/chronometer"
             android:layout_width="87dp"
             android:layout_height="33dp"
-            android:textColor="#004A18FF" />
+            android:textAlignment="center"/>
 
         <ToggleButton
             android:id="@+id/toggleButton"

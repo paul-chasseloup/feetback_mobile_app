@@ -61,6 +61,7 @@ public class landingpageActivity extends AppCompatActivity {
                         if (response.data().login().token() != null) {
                             Intent dataActivity = new Intent(landingpageActivity.this, dataActivity.class);
                             dataActivity.putExtra("userId", response.data().login().user().id().toString());
+                            dataActivity.putExtra("token", response.data().login().token());
                             startActivity(dataActivity);
                         }
                         Log.d(TAG, "Response: " + response.data().login());
