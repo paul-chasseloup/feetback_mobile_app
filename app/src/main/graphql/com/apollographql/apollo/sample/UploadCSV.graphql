@@ -1,5 +1,5 @@
-mutation uploadCSV($file: Upload){
-  uploadCSV(csvFile: $file){
+mutation uploadCSV($file: Upload, $token: String){
+  uploadCSV(csvFile: $file, token: $token){
     status,
     message,
     fileCompleteName

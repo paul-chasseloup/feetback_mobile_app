@@ -4,7 +4,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +55,8 @@ public class dataActivity extends AppCompatActivity {
     private String userId;
     private Chronometer mChronometer;
 
+    private String token;
+
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -78,6 +82,7 @@ public class dataActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         if(extra !=null){
             userId = extra.getString("userId");
+            token = extra.getString("token");
         }
 
         mStartStopBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -115,6 +120,12 @@ public class dataActivity extends AppCompatActivity {
                 startActivity(landingpageActivity);
             }
         });
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
+//            }
+//        }
     }
 
     SensorInput findValues(ArrayList<String> sensors, int num) {
@@ -147,9 +158,10 @@ public class dataActivity extends AppCompatActivity {
     public void verifyStoragePermissions() {
         // Check if we have write permission
         Activity activity = (Activity) this;
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission1 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission2 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
 
-        if (permission != PackageManager.PERMISSION_GRANTED) {
+        if (permission1 != PackageManager.PERMISSION_GRANTED && permission2 != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
             ActivityCompat.requestPermissions(
                     activity,
@@ -162,22 +174,29 @@ public class dataActivity extends AppCompatActivity {
     void writeCsv() throws IOException {
         verifyStoragePermissions();
         String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-        String fileName = "SensorsData.csv";
+//        File folder = new File(Environment.getExternalStorageDirectory());
+
+//        boolean var = false;
+//        if (!folder.exists())
+//            var = folder.mkdir();
+//        System.out.println(var);
+
+        String fileName = "SensorsDataFeetback.csv";
         String filePath = baseDir + File.separator + fileName;
+//        String filePath = folder.toString() + "/" + fileName;
         final File f = new File(filePath);
         CSVWriter writer;
         FileWriter mFileWriter;
 
         // File exist
-        if(f.exists()&&!f.isDirectory())
-        {
-                mFileWriter = new FileWriter(filePath, true);
-                writer = new CSVWriter(mFileWriter);
-        }
-        else
-        {
-                writer = new CSVWriter(new FileWriter(filePath));
-        }
+//        if(f.exists()&&!f.isDirectory()) {
+//                mFileWriter = new FileWriter(filePath, true);
+//                writer = new CSVWriter(mFileWriter);
+//        }
+//        else {
+            FileWriter fw = new FileWriter(filePath);
+                writer = new CSVWriter(fw);
+//        }
 
         writer.writeNext(listSensors1.toArray(new String[listSensors1.size()]));
         writer.writeNext(listSensors2.toArray(new String[listSensors2.size()]));
@@ -192,6 +211,7 @@ public class dataActivity extends AppCompatActivity {
                 UploadCSVMutation
                         .builder()
                         .fileInput(fileInputType)
+                        .token(token)
                         .build()
         )
                 .enqueue(new ApolloCall.Callback<UploadCSVMutation.Data>() {

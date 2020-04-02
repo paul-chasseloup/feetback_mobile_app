@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,8 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="24dp"
         android:gravity="bottom|center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:layout_width="269dp"
@@ -21,8 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="#000000"
-            android:text="WELCOME !\n\nPlease sign in\nor register\n\n" />
+            android:text="WELCOME !\n\nPlease sign in\nor register\n\n"
+            android:textColor="#000000" />
 
         <EditText
             android:id="@+id/activity_main_email"
@@ -53,7 +56,7 @@
             android:gravity="center"
             android:onClick="Login"
             android:text="@string/login"
-            android:textColor="#1195ef"/>
+            android:textColor="#1195ef" />
 
         <TextView
             android:id="@+id/activity_main_register_link"
@@ -63,9 +66,8 @@
             android:clickable="true"
             android:gravity="center"
             android:text="No account yet? Create one"
-            android:onClick="Register"
-            android:textSize="16dip"
-            android:textColor="#FFB417" />
+            android:textColor="#FFB417"
+            android:textSize="16dip" />
 
     </LinearLayout>
 
