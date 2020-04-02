@@ -177,29 +177,15 @@ public class dataActivity extends AppCompatActivity {
     void writeCsv() throws IOException {
         verifyStoragePermissions();
         String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-//        File folder = new File(Environment.getExternalStorageDirectory());
-
-//        boolean var = false;
-//        if (!folder.exists())
-//            var = folder.mkdir();
-//        System.out.println(var);
 
         String fileName = "SensorsDataFeetback.csv";
         String filePath = baseDir + File.separator + fileName;
-//        String filePath = folder.toString() + "/" + fileName;
         final File f = new File(filePath);
         CSVWriter writer;
         FileWriter mFileWriter;
 
-        // File exist
-//        if(f.exists()&&!f.isDirectory()) {
-//                mFileWriter = new FileWriter(filePath, true);
-//                writer = new CSVWriter(mFileWriter);
-//        }
-//        else {
-            FileWriter fw = new FileWriter(filePath);
-                writer = new CSVWriter(fw);
-//        }
+        FileWriter fw = new FileWriter(filePath);
+        writer = new CSVWriter(fw);
 
         writer.writeNext(listSensors1.toArray(new String[listSensors1.size()]));
         writer.writeNext(listSensors2.toArray(new String[listSensors2.size()]));
