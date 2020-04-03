@@ -142,7 +142,7 @@ public class dataActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    sendData("1");
+                    sendData("0");
                     closeBT();
                 } catch (IOException e) {
                     e.printStackTrace();
