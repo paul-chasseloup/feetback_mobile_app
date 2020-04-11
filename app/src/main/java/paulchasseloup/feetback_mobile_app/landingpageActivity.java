@@ -45,6 +45,11 @@ public class landingpageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Login
+     *
+     * @param view
+     */
     public void Login(View view) {
         ApolloConnector.setupApollo().query(
                 LoginQuery
@@ -56,8 +61,8 @@ public class landingpageActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(@NotNull Response<LoginQuery.Data> response) {
-
                         labelMessage.setText(response.data().login().message());
+                        // Correct credentials
                         if (response.data().login().token() != null) {
                             Intent dataActivity = new Intent(landingpageActivity.this, dataActivity.class);
                             dataActivity.putExtra("userId", response.data().login().user().id().toString());

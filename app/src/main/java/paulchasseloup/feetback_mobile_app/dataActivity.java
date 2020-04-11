@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -53,6 +52,7 @@ public class dataActivity extends AppCompatActivity {
     private Button mCancelBtn;
     private TextView mDisconnect;
 
+    // Sensors data storage
     private int currentSensor;
     private ArrayList<String> listSensors1 = new ArrayList<>();
     private ArrayList<String> listSensors2 = new ArrayList<>();
@@ -81,7 +81,6 @@ public class dataActivity extends AppCompatActivity {
     private Thread workerThread;
     private byte[] readBuffer;
     private int readBufferPosition;
-    private int counter;
     volatile boolean stopWorker;
     private TextView bluetoothMsg;
     private String btDeviceName = "ESP32_Feetback";
@@ -90,18 +89,15 @@ public class dataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
+
+        // Initialize objects' references
         mStartStopBtn = (ToggleButton) findViewById(R.id.toggleButton);
         mDisconnect = (TextView) findViewById(R.id.disconnectLink);
         mChronometer = (Chronometer) findViewById(R.id.chronometer);
         mCancelBtn = (Button) findViewById(R.id.cancelButton);
         bluetoothMsg = (TextView) findViewById(R.id.bluetoothMsg);
 
-//        listSensors1.addAll(Arrays.asList("1","2"));
-//        listSensors2.addAll(Arrays.asList("2","3"));
-//        listSensors3.addAll(Arrays.asList("3","4"));
-//        listSensors4.addAll(Arrays.asList("4","5"));
-//        listSensors5.addAll(Arrays.asList("5","6"));
-
+        // Retrieve data from landing page
         Bundle extra = getIntent().getExtras();
         if(extra !=null) {
             userId = extra.getString("userId");
@@ -110,11 +106,14 @@ public class dataActivity extends AppCompatActivity {
 
         mStartStopBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Start
                 if (isChecked) {
+                    // Initialize chronometer
                     mChronometer.setBase(SystemClock.elapsedRealtime());
                     mChronometer.stop();
                     mChronometer.start();
-                    /// here the method to collect the data from the device
+
+                    // Start BT connection
                     try {
                         if (findBT()) {
                             openBT();
@@ -123,10 +122,12 @@ public class dataActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                // Send
                 } else {
                     mChronometer.setBase(SystemClock.elapsedRealtime());
                     mChronometer.stop();
-                    /// here the method to to stop the sampling and to send the DB
+
+                    // End BT connection
                     try {
                         sendData("0");
                         closeBT();
@@ -154,19 +155,25 @@ public class dataActivity extends AppCompatActivity {
         mDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /// put here a method to disconect from DB
+                // Return to landing page
                 Intent landingpageActivity = new Intent(dataActivity.this, landingpageActivity.class);
                 startActivity(landingpageActivity);
             }
         });
     }
 
+    /**
+     * Find Bluetooth connection
+     *
+     * @return boolean
+     */
     private boolean findBT() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null) {
             bluetoothMsg.setText("No bluetooth adapter available");
         }
 
+        // BT permissions enable
         if(!mBluetoothAdapter.isEnabled()) {
             Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBluetooth, 0);
@@ -176,7 +183,6 @@ public class dataActivity extends AppCompatActivity {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         if(pairedDevices.size() > 0) {
             for(BluetoothDevice device : pairedDevices) {
-                // Bluetooth device name
                 if(device.getName().equals(btDeviceName)) {
                     bluetoothMsg.setText("Bluetooth Device Found");
                     deviceFound = true;
@@ -191,6 +197,11 @@ public class dataActivity extends AppCompatActivity {
         return deviceFound;
     }
 
+    /**
+     * Open / Establishes BT connection
+     *
+     * @throws IOException
+     */
     private void openBT() throws IOException {
         bluetoothMsg.setText("");
         UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //Standard SerialPortService ID
@@ -202,6 +213,11 @@ public class dataActivity extends AppCompatActivity {
         beginListenForData();
     }
 
+    /**
+     * Add data to corresponding sensor list (data captured in order 1 - 5)
+     *
+     * @param data sensor's reading
+     */
     private void updateSensorList(String data) {
         switch (currentSensor) {
             case 2:
@@ -223,6 +239,9 @@ public class dataActivity extends AppCompatActivity {
         currentSensor++;
     }
 
+    /**
+     * Capture sensors' data from device
+     */
     private void beginListenForData() {
         final Handler handler = new Handler();
         final byte delimiter = 10; //This is the ASCII code for a newline character
@@ -250,6 +269,7 @@ public class dataActivity extends AppCompatActivity {
                                     {
                                         public void run()
                                         {
+                                            // save data in corresponding data list
                                             updateSensorList(data);
                                         }
                                     });
@@ -268,23 +288,41 @@ public class dataActivity extends AppCompatActivity {
         workerThread.start();
     }
 
+    /**
+     * Send data to device.  Start -> msg = 1, End -> msg = 0
+     *
+     * @param msg data to be sent
+     * @throws IOException
+     */
     private void sendData(String msg) throws IOException {
+        //
         msg += "\n";
         mmOutputStream.write(msg.getBytes());
     }
 
+    /**
+     * Analyze data: get min, max and average
+     *
+     * @param sensors list
+     * @param num sensor's number
+     * @return SensorInput
+     */
     private SensorInput findValues(ArrayList<String> sensors, int num) {
         Double min = Double.MAX_VALUE;
         Double max = Double.MIN_VALUE;
         Double sum = 0.0;
         for (String valString : sensors) {
             double val = Double.parseDouble(valString);
+            // Minimum
             if (val < min) {
                 min = val;
             }
+
+            // Maximum
             if (val > max) {
                 max = val;
             }
+            // Add values to get average
             sum += val;
         }
 
@@ -300,6 +338,11 @@ public class dataActivity extends AppCompatActivity {
         return sensorInput;
     }
 
+    /**
+     * Close BT connection
+     *
+     * @throws IOException
+     */
     private void closeBT() throws IOException {
         stopWorker = true;
         mmOutputStream.close();
@@ -307,6 +350,9 @@ public class dataActivity extends AppCompatActivity {
         mmSocket.close();
     }
 
+    /**
+     * Get permissions if required
+     */
     public void verifyStoragePermissions() {
         // Check if we have write permission
         Activity activity = (Activity) this;
@@ -323,10 +369,16 @@ public class dataActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Create csv file with sensors' data
+     *
+     * @throws IOException
+     */
     private void writeCsv() throws IOException {
         verifyStoragePermissions();
         String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
 
+        // Initialize file
         String fileName = "SensorsDataFeetback.csv";
         String filePath = baseDir + File.separator + fileName;
         final File f = new File(filePath);
@@ -336,6 +388,7 @@ public class dataActivity extends AppCompatActivity {
         FileWriter fw = new FileWriter(filePath);
         writer = new CSVWriter(fw);
 
+        // Write data
         writer.writeNext(listSensors1.toArray(new String[listSensors1.size()]));
         writer.writeNext(listSensors2.toArray(new String[listSensors2.size()]));
         writer.writeNext(listSensors3.toArray(new String[listSensors3.size()]));
@@ -372,6 +425,12 @@ public class dataActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Send measure to server
+     *
+     * @param fileCompleteName
+     * @throws IOException
+     */
     private void addMeasure(String fileCompleteName) throws IOException {
         List<SensorInput> sensorList = new ArrayList<>();
         sensorList.add(findValues(listSensors1, 1));
