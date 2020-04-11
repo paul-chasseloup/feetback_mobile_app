@@ -56,6 +56,11 @@ public class registerActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Register new user
+     *
+     * @param view
+     */
     public void RegisterUser(View view) {
 
         final UserInput userInput = UserInput
@@ -81,6 +86,7 @@ public class registerActivity extends AppCompatActivity {
                     public void onResponse(@NotNull Response<RegisterMutation.Data> response) {
                         message = response.data().register().message();
                         Log.d(TAG, "Response: " + response.data().register());
+                        // Correct information
                         if (response.data().register().status()) {
                             Intent landingpageActivity = new Intent(registerActivity.this, landingpageActivity.class);
                             startActivity(landingpageActivity);
