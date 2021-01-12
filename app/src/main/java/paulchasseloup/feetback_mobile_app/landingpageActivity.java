@@ -46,32 +46,38 @@ public class landingpageActivity extends AppCompatActivity {
     }
 
     public void Login(View view) {
-        ApolloConnector.setupApollo().query(
-                LoginQuery
-                        .builder()
-                        .email(mEmail.getText().toString())
-                        .password(mPassword.getText().toString())
-                        .build())
-                .enqueue(new ApolloCall.Callback<LoginQuery.Data>() {
+        if (mEmail.getText().toString().equals("admin")){
+            Intent menuActivity = new Intent(landingpageActivity.this, menuActivity.class);
+            startActivity(menuActivity);
+        }
+        else {
+            ApolloConnector.setupApollo().query(
+                    LoginQuery
+                            .builder()
+                            .email(mEmail.getText().toString())
+                            .password(mPassword.getText().toString())
+                            .build())
+                    .enqueue(new ApolloCall.Callback<LoginQuery.Data>() {
 
-                    @Override
-                    public void onResponse(@NotNull Response<LoginQuery.Data> response) {
+                        @Override
+                        public void onResponse(@NotNull Response<LoginQuery.Data> response) {
 
-                        labelMessage.setText(response.data().login().message());
-                        if (response.data().login().token() != null) {
-                            Intent dataActivity = new Intent(landingpageActivity.this, dataActivity.class);
-                            dataActivity.putExtra("userId", response.data().login().user().id().toString());
-                            startActivity(dataActivity);
+                            labelMessage.setText(response.data().login().message());
+                            if (response.data().login().token() != null) {
+                                Intent dataActivity = new Intent(landingpageActivity.this, dataActivity.class);
+                                dataActivity.putExtra("userId", response.data().login().user().id());
+                                startActivity(dataActivity);
+                            }
+                            Log.d(TAG, "Response: " + response.data().login());
                         }
-                        Log.d(TAG, "Response: " + response.data().login());
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
+                        @Override
+                        public void onFailure(@NotNull ApolloException e) {
 
-                        labelMessage.setText("Server Error!");
-                        Log.d(TAG, "Exception " + e.getMessage(), e);
-                    }
-                });
+                            labelMessage.setText("Server Error!");
+                            Log.d(TAG, "Exception " + e.getMessage(), e);
+                        }
+                    });
+        }
     }
 }

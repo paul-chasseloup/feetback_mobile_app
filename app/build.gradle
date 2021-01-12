@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.apollographql.android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "paulchasseloup.feetback_layout"
         minSdkVersion 15
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -43,4 +43,6 @@ dependencies {
 
     compileOnly 'org.jetbrains:annotations:13.0'
     testCompileOnly 'org.jetbrains:annotations:13.0'
+    def fragment_version = "1.2.5"
+    implementation "androidx.fragment:fragment:$fragment_version"
 }
