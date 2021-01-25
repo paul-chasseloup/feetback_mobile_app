@@ -19,6 +19,7 @@ import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+//import android.bluetooth.adapter.action.REQUEST_ENABLE;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -70,7 +71,8 @@ public class dataActivity extends AppCompatActivity {
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    //        Manifest.permission.REQUEST_ENABLE,
     };
 
     private BluetoothAdapter mBluetoothAdapter;
@@ -358,6 +360,8 @@ public class dataActivity extends AppCompatActivity {
         Activity activity = (Activity) this;
         int permission1 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int permission2 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+    //    int permission3 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.REQUEST_ENABLE);
+
 
         if (permission1 != PackageManager.PERMISSION_GRANTED && permission2 != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
