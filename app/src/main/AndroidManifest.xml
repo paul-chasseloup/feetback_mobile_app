@@ -19,15 +19,15 @@
         android:requestLegacyExternalStorage="true"
 
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity android:name="paulchasseloup.feetback_mobile_app.registerActivity"></activity>
         <activity android:name="paulchasseloup.feetback_mobile_app.dataActivity" />
-        <activity android:name="paulchasseloup.feetback_mobile_app.landingpageActivity">
+        <activity android:name="paulchasseloup.feetback_mobile_app.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

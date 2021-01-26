@@ -7,9 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -156,7 +154,7 @@ public class dataActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Return to landing page
-                Intent landingpageActivity = new Intent(dataActivity.this, landingpageActivity.class);
+                Intent landingpageActivity = new Intent(dataActivity.this, MainActivity.class);
                 startActivity(landingpageActivity);
             }
         });

@@ -1,73 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".landingpageActivity">
+    android:fitsSystemWindows="true"
+    android:exported="true"
+    tools:openDrawer="start"
+    tools:context=".MainActivity">
 
+    <!-- 1 | MainActivity RootView -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent">
+        >
 
-        <ImageView
-            android:layout_width="218dp"
-            android:layout_height="208dp"
-            android:src="@drawable/logo" />
-
-        <TextView
-            android:id="@+id/labelMessage"
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activity_main_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="WELCOME !\n\nPlease sign in\nor register\n"
-            android:textColor="#000000" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:theme="@style/ToolBarStyle"/>
 
-        <EditText
-            android:id="@+id/activity_main_email"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            tools:layout_editor_absoluteX="96dp"
-            tools:layout_editor_absoluteY="187dp" />
-
-        <EditText
-            android:id="@+id/activity_main_password"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:ems="10"
-            android:hint="password"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="98dp"
-            tools:layout_editor_absoluteY="242dp" />
-
-        <Button
-            android:id="@+id/activity_main_login_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:onClick="Login"
-            android:text="@string/login"
-            android:textColor="#1195ef" />
-
-        <TextView
-            android:id="@+id/activity_main_register_link"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="No account yet? Create one"
-            android:textColor="#FFB417"
-            android:textSize="16dip" />
+        <!-- FrameLayout for our fragments -->
+        <FrameLayout
+            android:id="@+id/activity_main_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 2 | NavigationView -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/activity_main_nav_header"
+        app:menu="@menu/activity_main_menu_drawer"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

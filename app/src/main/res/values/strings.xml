@@ -1,17 +1,15 @@
 <resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="app_name">Feetback</string>
     <string name="login">LOGIN</string>
     <string name="title_activity_register">registerActivity</string>
     <string name="protocole_prompt">Choisissez le protocole</string>
-    <string-array name="protocole_array">
-        <item>Pied droit sans semelle</item>
-        <item>Pied droit avec semelle</item>
-        <item>Pied gauche sans semelle</item>
-        <item>Pied gauche avec semelle</item>
-    </string-array>
-    <string-array name="protocole_under_array">
-        <item>Statique bipolade</item>
-        <item>Statique Unipolade</item>
-        <item>Dynamique</item>
-    </string-array>
+        <string name="protocole1">Pied droit sans semelle</string>
+        <string name="protocole2">Pied droit avec semelle</string>
+        <string name="protocole3">Pied gauche sans semelle</string>
+        <string name="protocole4">Pied gauche avec semelle</string>
+        <string name="protocole.1">Statique bipolade</string>
+        <string name="protocole.2">Statique Unipolade</string>
+        <string name="protocole.3">Dynamique</string>
 </resources>
