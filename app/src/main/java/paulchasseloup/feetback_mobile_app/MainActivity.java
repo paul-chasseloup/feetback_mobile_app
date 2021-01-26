@@ -2,6 +2,7 @@ package paulchasseloup.feetback_mobile_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
@@ -54,14 +55,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_LEFT_WITH = 3;
     private static final int FRAGMENT_LANDING_PAGE = 4;
 
-
-
     private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_landing);
+        setContentView(R.layout.activity_main);
 
 
         // Configure all views
@@ -138,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void configureDrawerLayout(){
         this.drawerLayout = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        Log.d(TAG, "Exception " + this.drawerLayout);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }

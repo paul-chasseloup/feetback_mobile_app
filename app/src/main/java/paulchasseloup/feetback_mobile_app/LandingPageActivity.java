@@ -1,6 +1,7 @@
 package paulchasseloup.feetback_mobile_app;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +43,7 @@ public class LandingPageActivity extends FragmentActivity {
         labelMessage = (TextView) findViewById(R.id.labelMessage);
         mRegisterLink = (TextView) findViewById(R.id.activity_main_register_link);
 
-        labelMessage.setText("Welcome!");
+        labelMessage.setText("Bienvenue!");
 
         mRegisterLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +52,6 @@ public class LandingPageActivity extends FragmentActivity {
                 startActivity(registerActivity);
             }
         });
-
     }
 
     /**

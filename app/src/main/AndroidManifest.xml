@@ -25,15 +25,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name="paulchasseloup.feetback_mobile_app.registerActivity"></activity>
-        <activity android:name="paulchasseloup.feetback_mobile_app.dataActivity" />
-        <activity android:name="paulchasseloup.feetback_mobile_app.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".registerActivity"/>
+        <activity android:name=".dataActivity" />
+        <activity android:name=".LandingPageActivity" />
     </application>
 
 </manifest>
