@@ -44,7 +44,8 @@
             android:id="@+id/chronometer"
             android:layout_width="87dp"
             android:layout_height="33dp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal" />
 
         <ToggleButton
             android:id="@+id/toggleButton"
@@ -78,6 +79,8 @@
             android:textColor="#1195EF"
             android:text="disconnect. Back to login page"
             android:textSize="16dip" />
+
+
 
     </LinearLayout>
 

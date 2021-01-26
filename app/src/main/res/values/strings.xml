@@ -1,5 +1,17 @@
 <resources>
-    <string name="app_name">Feetback_layout</string>
+    <string name="app_name">Feetback</string>
     <string name="login">LOGIN</string>
     <string name="title_activity_register">registerActivity</string>
+    <string name="protocole_prompt">Choisissez le protocole</string>
+    <string-array name="protocole_array">
+        <item>Pied droit sans semelle</item>
+        <item>Pied droit avec semelle</item>
+        <item>Pied gauche sans semelle</item>
+        <item>Pied gauche avec semelle</item>
+    </string-array>
+    <string-array name="protocole_under_array">
+        <item>Statique bipolade</item>
+        <item>Statique Unipolade</item>
+        <item>Dynamique</item>
+    </string-array>
 </resources>
