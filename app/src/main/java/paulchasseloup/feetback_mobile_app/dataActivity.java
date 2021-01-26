@@ -333,6 +333,7 @@ public class dataActivity extends AppCompatActivity {
                 .numberInput(Input.optional(num))
                 .posXInput(Input.optional(0.0))
                 .posYInput(Input.optional(0.0))
+                .listeInput(Input.optional(0.0))
                 .minPressureS(min)
                 .maxPressureS(max)
                 .averagePressureS(sum / sensors.size())

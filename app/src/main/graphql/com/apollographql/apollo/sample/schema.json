@@ -1297,6 +1297,16 @@
               "defaultValue": null
             },
             {
+              "name": "liste",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "averagePressureS",
               "description": "",
               "type": {
