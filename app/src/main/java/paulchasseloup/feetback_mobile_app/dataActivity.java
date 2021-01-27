@@ -313,27 +313,34 @@ public class dataActivity extends AppCompatActivity {
         Double min = Double.MAX_VALUE;
         Double max = Double.MIN_VALUE;
         Double sum = 0.0;
+        Input<List<Double>> sensorValues = null;
+        //List<Float> sensorValues = null;
+        //List<Double> sensorValues = null;
+        //ArrayList<Double> sensorValues = null;
+        //ArrayList<Float> sensorValues = null;
         for (String valString : sensors) {
             double val = Double.parseDouble(valString);
             // Minimum
             if (val < min) {
                 min = val;
             }
-
             // Maximum
             if (val > max) {
                 max = val;
             }
+            //sensorValues.add(val);
+            //sensorValues.add(val);
             // Add values to get average
             sum += val;
         }
+
 
         final SensorInput sensorInput = SensorInput
                 .builder()
                 .numberInput(Input.optional(num))
                 .posXInput(Input.optional(0.0))
                 .posYInput(Input.optional(0.0))
-                .listeInput(Input.optional(0.0))
+                .listInput(sensorValues)
                 .minPressureS(min)
                 .maxPressureS(max)
                 .averagePressureS(sum / sensors.size())
