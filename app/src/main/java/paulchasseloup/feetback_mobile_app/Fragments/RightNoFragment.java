@@ -81,10 +81,10 @@ public class RightNoFragment extends Fragment {
 
                 final String finalTime_max = time_max;
                 // do something when chronometer changes
-                if(chronometer.getText().toString().contains(finalTime_max)){
-                    chronometer.stop();
-                    timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
-                }
+                    if(chronometer.getText().toString().contains(finalTime_max)){
+                        chronometer.stop();
+                        timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
+                    }
 
                 //Récuperation données bluetooth
 
@@ -137,6 +137,7 @@ public class RightNoFragment extends Fragment {
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rn_chronometer.stop();
                 String finalTime_max = time_max;
                 if(finalTime_max.contains("30")){
                     time_max = "10";
@@ -145,12 +146,12 @@ public class RightNoFragment extends Fragment {
                     timing.setText(getResources().getString(R.string.unipolade_time));
                     cadre.setText(getResources().getString(R.string.unipolade_cadre));
                 }else if(finalTime_max.contains("10")){
-                    time_max = "90";
+                    time_max = "01:30";
                     setTitle(time_max);
                     conditions.setText(getResources().getString(R.string.dynamic_contitions));
                     timing.setText(getResources().getString(R.string.dynamic_time));
                     cadre.setText(getResources().getString(R.string.dynamic_cadre));
-                }else if(finalTime_max.contains("90")){
+                }else if(finalTime_max.contains("01:30")){
                     time_max = "30";
                     setTitle(time_max);
                     conditions.setText(getResources().getString(R.string.bipolade_conditions));
@@ -184,7 +185,7 @@ public class RightNoFragment extends Fragment {
             case "10":
                     title.setText(getResources().getString(R.string.unipolade_title_right_no));
                 break;
-            case "90":
+            case "01:30":
                 title.setText(getResources().getString(R.string.dynamic_title_right_no));
                 break;
             default:

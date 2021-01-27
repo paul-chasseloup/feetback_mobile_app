@@ -35,8 +35,6 @@
         </activity>
 
         <activity android:name=".registerActivity"/>
-        <activity android:name=".DataActivityOld" />
-        <activity android:name=".LandingPageActivity" />
     </application>
 
 </manifest>

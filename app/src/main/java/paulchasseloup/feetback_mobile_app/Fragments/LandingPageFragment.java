@@ -1,6 +1,5 @@
 package paulchasseloup.feetback_mobile_app.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,9 +20,7 @@ import com.apollographql.apollo.sample.LoginQuery;
 import org.jetbrains.annotations.NotNull;
 
 import paulchasseloup.feetback_mobile_app.ApolloConnector;
-import paulchasseloup.feetback_mobile_app.LandingPageActivity;
 import paulchasseloup.feetback_mobile_app.R;
-import paulchasseloup.feetback_mobile_app.registerActivity;
 
 public class LandingPageFragment extends Fragment {
 
