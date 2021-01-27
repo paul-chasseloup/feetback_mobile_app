@@ -141,24 +141,25 @@ public class LeftNoFragment extends Fragment {
                 ln_chronometer.setBase(SystemClock.elapsedRealtime());
                 ln_chronometer.stop();
                 String finalTime_max = time_max;
-                if(finalTime_max.contains("30")){
-                    time_max = "10";
-                    setTitle(time_max);
-                    conditions.setText(getResources().getString(R.string.unipolade_conditions));
-                    timing.setText(getResources().getString(R.string.unipolade_time));
-                    cadre.setText(getResources().getString(R.string.unipolade_cadre));
-                }else if(finalTime_max.contains("10")){
-                    time_max = "01:30";
-                    setTitle(time_max);
-                    conditions.setText(getResources().getString(R.string.dynamic_contitions));
-                    timing.setText(getResources().getString(R.string.dynamic_time));
-                    cadre.setText(getResources().getString(R.string.dynamic_cadre));
-                }else if(finalTime_max.contains("01:30")){
+                if (time_max.contains("01:30")) {
                     time_max = "30";
                     setTitle(time_max);
                     conditions.setText(getResources().getString(R.string.bipolade_conditions));
                     timing.setText(getResources().getString(R.string.bipolade_time));
                     cadre.setText(getResources().getString(R.string.bipolade_cadre));
+                }else if (finalTime_max.contains("30")) {
+                    time_max = "10";
+                    setTitle(time_max);
+                    conditions.setText(getResources().getString(R.string.unipolade_conditions));
+                    timing.setText(getResources().getString(R.string.unipolade_time));
+                    cadre.setText(getResources().getString(R.string.unipolade_cadre));
+                }else if (finalTime_max.contains("10")) {
+                    time_max = "01:30";
+                    setTitle(time_max);
+                    conditions.setText(getResources().getString(R.string.dynamic_contitions));
+                    timing.setText(getResources().getString(R.string.dynamic_time));
+                    cadre.setText(getResources().getString(R.string.dynamic_cadre));
+                    next_btn.setClickable(true);
                 }
                 next_btn.setClickable(true);
             }
