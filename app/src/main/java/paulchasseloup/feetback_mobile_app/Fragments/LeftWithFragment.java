@@ -129,6 +129,7 @@ public class LeftWithFragment extends Fragment {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                lw_chronometer.setBase(SystemClock.elapsedRealtime());
                 lw_chronometer.stop();
                 timing.setText("Analyse arretee");
             }
@@ -137,6 +138,7 @@ public class LeftWithFragment extends Fragment {
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                lw_chronometer.setBase(SystemClock.elapsedRealtime());
                 lw_chronometer.stop();
                 String finalTime_max = time_max;
                 if(finalTime_max.contains("30")){

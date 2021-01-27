@@ -129,6 +129,7 @@ public class RightNoFragment extends Fragment {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rn_chronometer.setBase(SystemClock.elapsedRealtime());
                 rn_chronometer.stop();
                 timing.setText("Analyse arretee");
             }
@@ -137,6 +138,7 @@ public class RightNoFragment extends Fragment {
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rn_chronometer.setBase(SystemClock.elapsedRealtime());
                 rn_chronometer.stop();
                 String finalTime_max = time_max;
                 if(finalTime_max.contains("30")){
