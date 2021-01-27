@@ -76,8 +76,6 @@ public class RightNoFragment extends Fragment {
 
     private final String TAG = "DataActivity";
     private String userId;
-    private Chronometer mChronometer;
-
     private String token;
 
     // Storage Permissions
