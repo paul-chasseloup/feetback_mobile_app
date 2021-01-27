@@ -71,10 +71,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:background="@android:color/white"
                 android:text="COMMENCER"
                 android:textAlignment="center"
                 android:textColor="#1195EF" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardview_light_background"
+                android:background="?android:attr/listDivider" />
 
             <Button
                 android:id="@+id/ln_stop"
@@ -85,6 +95,14 @@
                 android:background="@android:color/white"
                 android:text="ANNULER"
                 android:textColor="#1195EF" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardview_light_background"
+                android:background="?android:attr/listDivider" />
 
             <Button
                 android:id="@+id/ln_next"
