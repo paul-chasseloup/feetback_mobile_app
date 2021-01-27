@@ -63,16 +63,10 @@ public class LandingPageFragment extends Fragment {
         });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
-                                           @Override
-                                           public void onClick(View view) {
-                                               //Login();
-                                               labelMessage.setText("Correct Token");
-                                               Fragment fragmentDataActivity = RightNoFragment.newInstance();
-                                               FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                               fragmentTransaction.replace(R.id.activity_landing_drawer_layout, fragmentDataActivity);
-                                               fragmentTransaction.commit();
-                                           }
-                                       }
+            @Override
+            public void onClick(View view) {
+                Login(); }
+            }
         );
 
         return rootView;
@@ -96,23 +90,14 @@ public class LandingPageFragment extends Fragment {
 
                     @Override
                     public void onResponse(@NotNull Response<LoginQuery.Data> response) {
-                        Log.d("TAG", " IN RESPONSE");
                         labelMessage.setText(response.data().login().message());
                         // Correct credentials
                         if (response.data().login().token() != null) {
-/*
-                            Intent dataActivity = new Intent(LandingPageActivity.this, DataActivity.class);
-                            dataActivity.putExtra("userId", response.data().login().user().id().toString());
-                            dataActivity.putExtra("token", response.data().login().token());
-                            startActivity(dataActivity);
-*/
-                            Log.d("TAG", "I'm IN");
-                            Fragment fragmentDataActivity = DataFragment.newInstance();
+
+                            Fragment fragmentDataActivity = RightNoFragment.newInstance();
                             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.activity_landing_drawer_layout, fragmentDataActivity);
                             fragmentTransaction.commit();
-                            Log.d("TAG", "I'm OUT");
-
                         }
                         //Log.d(TAG, "Response: " + response.data().login());
                     }
