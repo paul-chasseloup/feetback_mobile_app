@@ -91,7 +91,12 @@ public class LandingPageFragment extends Fragment {
                         // Correct credentials
                         if (response.data().login().token() != null) {
 
+                            Bundle bundle = new Bundle();
+                            bundle.putString("userId", response.data().login().user().id().toString());
+                            bundle.putString("token", response.data().login().token());
+
                             Fragment fragmentDataActivity = RightNoFragment.newInstance();
+                            fragmentDataActivity.setArguments(bundle);
                             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.activity_landing_drawer_layout, fragmentDataActivity);
                             fragmentTransaction.commit();

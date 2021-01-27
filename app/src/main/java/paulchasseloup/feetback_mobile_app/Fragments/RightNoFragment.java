@@ -124,14 +124,19 @@ public class RightNoFragment extends Fragment {
         this.time_max = "30";
 
 
-/*
-        // Retrieve data from landing page
-        Bundle extra = getIntent().getExtras();
-        if(extra !=null) {
-            userId = extra.getString("userId");
-            token = extra.getString("token");
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            this.userId = bundle.getString("userId");
+            this.token = bundle.getString("token");
         }
-        */
+
+        // Retrieve data from landing page
+//        Bundle extra = getActivity().getExtras();
+ //       if(extra !=null) {
+  //          userId = extra.getString("userId");
+   //         token = extra.getString("token");
+    //    }
+
 
         rn_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
 
@@ -146,8 +151,10 @@ public class RightNoFragment extends Fragment {
                         timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
                     }
 
+
                 //Récuperation données bluetooth
                 // Start BT connection
+                /*
                 try {
                     if (findBT()) {
                         openBT();
@@ -165,7 +172,7 @@ public class RightNoFragment extends Fragment {
                        writeCsv();
                    } catch (IOException e) {
                        e.printStackTrace();
-                   }
+                   }*/
 
             }
 
