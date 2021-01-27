@@ -95,6 +95,8 @@ public class LandingPageFragment extends Fragment {
                             bundle.putString("userId", response.data().login().user().id().toString());
                             bundle.putString("token", response.data().login().token());
 
+                            Log.d("ID", " : "+bundle.getString("userId"));
+                            Log.d("token"," : "+bundle.getString("token") );
                             Fragment fragmentDataActivity = RightNoFragment.newInstance();
                             fragmentDataActivity.setArguments(bundle);
                             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();

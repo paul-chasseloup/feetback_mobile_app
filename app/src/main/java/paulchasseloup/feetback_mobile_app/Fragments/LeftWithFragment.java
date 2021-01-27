@@ -123,6 +123,9 @@ public class LeftWithFragment extends Fragment {
         if (bundle != null) {
             this.userId = bundle.getString("userId");
             this.token = bundle.getString("token");
+        }else{
+            this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwMGVjYzVmMGExZDBkMDAxNzdlZjI0OSIsIm5hbWUiOiJMYXVyZW50IiwibGFzdG5hbWUiOiJEZWxpc2xlIiwiZW1haWwiOiJsZGVsaXNsZUBpbnNlZWMuY29tIiwicG9kaWF0cmlzdCI6ZmFsc2UsImlkIjoxMywicmVnaXN0ZXJEYXRlIjoiMjAyMS0wMS0yNSAxMzo0OToxOSIsImFub21hbHkiOmZhbHNlLCJhbm9tYWx5X3RocmVzaG9sZCI6MjAsInNlbnNvcl8xX3RvcF9wb3NpdGlvbiI6NDU0LCJzZW5zb3JfMl90b3BfcG9zaXRpb24iOjQ1NCwic2Vuc29yXzNfdG9wX3Bvc2l0aW9uIjo0NTQsInNlbnNvcl80X3RvcF9wb3NpdGlvbiI6NDU0LCJzZW5zb3JfNV90b3BfcG9zaXRpb24iOjQ1NCwic2Vuc29yXzFfbGVmdF9wb3NpdGlvbiI6NDEyLCJzZW5zb3JfMl9sZWZ0X3Bvc2l0aW9uIjo0NTIsInNlbnNvcl8zX2xlZnRfcG9zaXRpb24iOjQ5Miwic2Vuc29yXzRfbGVmdF9wb3NpdGlvbiI6NTMyLCJzZW5zb3JfNV9sZWZ0X3Bvc2l0aW9uIjo1NzIsImN1cnJlbnRQb2RpYXRyaXN0IjoiIn0sImlhdCI6MTYxMTc4NzA4NCwiZXhwIjoxNjExODczNDg0fQ.8u9yRKHlPmssn2X7OLMTpceuKi7jDQeAMOulSDJ30EQ";
+            this.userId = "13";
         }
 
 /*
