@@ -67,7 +67,7 @@ public class LandingPageFragment extends Fragment {
                                            public void onClick(View view) {
                                                //Login();
                                                labelMessage.setText("Correct Token");
-                                               Fragment fragmentDataActivity = DataFragment.newInstance();
+                                               Fragment fragmentDataActivity = RightWithFragment.newInstance();
                                                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                                                fragmentTransaction.replace(R.id.activity_landing_drawer_layout, fragmentDataActivity);
                                                fragmentTransaction.commit();
