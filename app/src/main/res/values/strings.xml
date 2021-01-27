@@ -22,18 +22,18 @@
     <string name="bipolade_time">Duree : 30 secondes</string>
     <string name="bipolade_cadre">Cadre : isolé de toutes perturbations\n audibles et visuelles</string>
 
-    <string name="unipolade_title_right_with">1. Pied droit avec semelle en unipolade</string>
-    <string name="unipolade_title_right_no">1. Pied droit sans semelle en unipolade</string>
-    <string name="unipolade_title_left_with">1. Pied gauche avec semelle en unipolade</string>
-    <string name="unipolade_title_left_no">1. Pied gauche sans semelle en unipolade</string>
+    <string name="unipolade_title_right_with">2. Pied droit avec semelle en unipolade</string>
+    <string name="unipolade_title_right_no">2. Pied droit sans semelle en unipolade</string>
+    <string name="unipolade_title_left_with">2. Pied gauche avec semelle en unipolade</string>
+    <string name="unipolade_title_left_no">2. Pied gauche sans semelle en unipolade</string>
     <string name="unipolade_conditions">Condition : debout dans une position confortable,\n regard à l’horizontale, les bras le long du corps </string>
     <string name="unipolade_time">Duree : 10 secondes</string>
     <string name="unipolade_cadre">Cadre : isolé de toutes perturbations\n audibles et visuelles</string>
 
-    <string name="dynamic_title_right_with">1. Pied droit avec semelle en dynamique</string>
-    <string name="dynamic_title_right_no">1. Pied droit sans semelle en dynamique</string>
-    <string name="dynamic_title_left_with">1. Pied gauche avec semelle en dynamique</string>
-    <string name="dynamic_title_left_no">1. Pied gauche sans semelle en dynamique</string>
+    <string name="dynamic_title_right_with">3. Pied droit avec semelle en dynamique</string>
+    <string name="dynamic_title_right_no">3. Pied droit sans semelle en dynamique</string>
+    <string name="dynamic_title_left_with">3. Pied gauche avec semelle en dynamique</string>
+    <string name="dynamic_title_left_no">3. Pied gauche sans semelle en dynamique</string>
     <string name="dynamic_contitions">Condition : Marche et cadence habituelles  </string>
     <string name="dynamic_time">Duree : 1min 30secondes</string>
     <string name="dynamic_cadre">Cadre : Long couloir</string>

@@ -24,7 +24,7 @@ public class RightNoFragment extends Fragment {
     private TextView conditions;
     private TextView cadre;
     private TextView timing;
-    private Chronometer rw_chronometer;
+    private Chronometer rn_chronometer;
     private Button start_btn;
     private Button cancel_btn;
     private Button next_btn;
@@ -51,15 +51,15 @@ public class RightNoFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_rn,
                 container, false);
 
-        this.title = rootView.findViewById(R.id.rw_title);
-        this.conditions = rootView.findViewById(R.id.rw_condition);
-        this.cadre = rootView.findViewById(R.id.rw_cadre);
-        this.timing = rootView.findViewById(R.id.rw_time);
-        this.rw_chronometer = rootView.findViewById(R.id.rw_chrono);
-        this.start_btn = rootView.findViewById(R.id.rw_start);
-        this.cancel_btn = rootView.findViewById(R.id.rw_stop);
-        this.next_btn = rootView.findViewById(R.id.rw_next);
-        this.disconnect = rootView.findViewById(R.id.disconnectLink2);
+        this.title = rootView.findViewById(R.id.rn_title);
+        this.conditions = rootView.findViewById(R.id.rn_condition);
+        this.cadre = rootView.findViewById(R.id.rn_cadre);
+        this.timing = rootView.findViewById(R.id.rn_time);
+        this.rn_chronometer = rootView.findViewById(R.id.rn_chrono);
+        this.start_btn = rootView.findViewById(R.id.rn_start);
+        this.cancel_btn = rootView.findViewById(R.id.rn_stop);
+        this.next_btn = rootView.findViewById(R.id.rn_next);
+        this.disconnect = rootView.findViewById(R.id.disconnectLinkRN);
 
         this.time_max = "30";
 
@@ -73,7 +73,7 @@ public class RightNoFragment extends Fragment {
         }
         */
 
-        rw_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+        rn_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
 
             @Override
 
@@ -98,9 +98,9 @@ public class RightNoFragment extends Fragment {
 
                 timing.setText("Analyse en cours ...");
                 // Initialize chronometer
-                rw_chronometer.setBase(SystemClock.elapsedRealtime());
-                rw_chronometer.stop();
-                rw_chronometer.start();
+                rn_chronometer.setBase(SystemClock.elapsedRealtime());
+                rn_chronometer.stop();
+                rn_chronometer.start();
 
                     /*
                     // Start BT connection
@@ -129,7 +129,7 @@ public class RightNoFragment extends Fragment {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rw_chronometer.stop();
+                rn_chronometer.stop();
                 timing.setText("Analyse arretee");
             }
         });

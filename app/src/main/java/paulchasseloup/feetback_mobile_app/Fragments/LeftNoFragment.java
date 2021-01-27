@@ -24,7 +24,7 @@ public class LeftNoFragment extends Fragment {
     private TextView conditions;
     private TextView cadre;
     private TextView timing;
-    private Chronometer rw_chronometer;
+    private Chronometer ln_chronometer;
     private Button start_btn;
     private Button cancel_btn;
     private Button next_btn;
@@ -51,17 +51,16 @@ public class LeftNoFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_ln,
                 container, false);
 
-        this.title = rootView.findViewById(R.id.rw_title);
-        this.conditions = rootView.findViewById(R.id.rw_condition);
-        this.cadre = rootView.findViewById(R.id.rw_cadre);
-        this.timing = rootView.findViewById(R.id.rw_time);
-        this.rw_chronometer = rootView.findViewById(R.id.rw_chrono);
-        this.start_btn = rootView.findViewById(R.id.rw_start);
-        this.cancel_btn = rootView.findViewById(R.id.rw_stop);
-        this.next_btn = rootView.findViewById(R.id.rw_next);
-        this.disconnect = rootView.findViewById(R.id.disconnectLink2);
+        this.title = rootView.findViewById(R.id.ln_title);
+        this.conditions = rootView.findViewById(R.id.ln_condition);
+        this.cadre = rootView.findViewById(R.id.ln_cadre);
+        this.timing = rootView.findViewById(R.id.ln_time);
+        this.ln_chronometer = rootView.findViewById(R.id.ln_chrono);
+        this.start_btn = rootView.findViewById(R.id.ln_start);
+        this.cancel_btn = rootView.findViewById(R.id.ln_stop);
+        this.next_btn = rootView.findViewById(R.id.ln_next);
+        this.disconnect = rootView.findViewById(R.id.disconnectLinkLN);
 
-        String title_text = this.title.getText().toString();
         this.time_max = "30";
 
 
@@ -74,7 +73,7 @@ public class LeftNoFragment extends Fragment {
         }
         */
 
-        rw_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+        ln_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
 
             @Override
 
@@ -99,9 +98,9 @@ public class LeftNoFragment extends Fragment {
 
                 timing.setText("Analyse en cours ...");
                 // Initialize chronometer
-                rw_chronometer.setBase(SystemClock.elapsedRealtime());
-                rw_chronometer.stop();
-                rw_chronometer.start();
+                ln_chronometer.setBase(SystemClock.elapsedRealtime());
+                ln_chronometer.stop();
+                ln_chronometer.start();
 
                     /*
                     // Start BT connection
@@ -130,7 +129,7 @@ public class LeftNoFragment extends Fragment {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rw_chronometer.stop();
+                ln_chronometer.stop();
                 timing.setText("Analyse arretee");
             }
         });
