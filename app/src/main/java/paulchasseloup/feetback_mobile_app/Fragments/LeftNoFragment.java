@@ -144,15 +144,15 @@ public class LeftNoFragment extends Fragment {
                 if (time_max.contains("01:30")) {
                     time_max = "30";
                     setTitle(time_max);
-                    conditions.setText(getResources().getString(R.string.bipolade_conditions));
-                    timing.setText(getResources().getString(R.string.bipolade_time));
-                    cadre.setText(getResources().getString(R.string.bipolade_cadre));
+                    conditions.setText(getResources().getString(R.string.bipodale_conditions));
+                    timing.setText(getResources().getString(R.string.bipodale_time));
+                    cadre.setText(getResources().getString(R.string.bipodale_conditions));
                 }else if (finalTime_max.contains("30")) {
                     time_max = "10";
                     setTitle(time_max);
-                    conditions.setText(getResources().getString(R.string.unipolade_conditions));
-                    timing.setText(getResources().getString(R.string.unipolade_time));
-                    cadre.setText(getResources().getString(R.string.unipolade_cadre));
+                    conditions.setText(getResources().getString(R.string.unipodale_conditions));
+                    timing.setText(getResources().getString(R.string.unipodale_time));
+                    cadre.setText(getResources().getString(R.string.unipodale_cadre));
                 }else if (finalTime_max.contains("10")) {
                     time_max = "01:30";
                     setTitle(time_max);
@@ -183,10 +183,10 @@ public class LeftNoFragment extends Fragment {
 
         switch (time){
             case "30" :
-                title.setText(getResources().getString(R.string.bipolade_title_left_no));
+                title.setText(getResources().getString(R.string.bipodale_title_left_no));
                 break;
             case "10":
-                title.setText(getResources().getString(R.string.unipolade_title_left_no));
+                title.setText(getResources().getString(R.string.unipodale_title_left_no));
                 break;
             case "01:30":
                 title.setText(getResources().getString(R.string.dynamic_title_left_no));

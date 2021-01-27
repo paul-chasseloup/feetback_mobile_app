@@ -14,21 +14,21 @@
         <string name="protocole.3">Dynamique</string>
 
 
-    <string name="bipolade_title_right_with">1. Pied droit avec semelle en bipolade</string>
-    <string name="bipolade_title_right_no">1. Pied droit sans semelle en bipolade</string>
-    <string name="bipolade_title_left_with">1. Pied gauche avec semelle en bipolade</string>
-    <string name="bipolade_title_left_no">1. Pied gauche sans semelle en bipolade</string>
-    <string name="bipolade_conditions">Condition : debout dans une position confortable,\n regard à l’horizontale, les bras le long du corps </string>
-    <string name="bipolade_time">Duree : 30 secondes</string>
-    <string name="bipolade_cadre">Cadre : isolé de toutes perturbations\n audibles et visuelles</string>
+    <string name="bipodale_title_right_with">1. Pied droit avec semelle en bipodale</string>
+    <string name="bipodale_title_right_no">1. Pied droit sans semelle en bipodale</string>
+    <string name="bipodale_title_left_with">1. Pied gauche avec semelle en bipodale</string>
+    <string name="bipodale_title_left_no">1. Pied gauche sans semelle en bipodale</string>
+    <string name="bipodale_conditions">Condition : debout dans une position confortable,\n regard à l’horizontale, les bras le long du corps </string>
+    <string name="bipodale_time">Duree : 30 secondes</string>
+    <string name="bipodale_cadre">Cadre : isolé de toutes perturbations\n audibles et visuelles</string>
 
-    <string name="unipolade_title_right_with">2. Pied droit avec semelle en unipolade</string>
-    <string name="unipolade_title_right_no">2. Pied droit sans semelle en unipolade</string>
-    <string name="unipolade_title_left_with">2. Pied gauche avec semelle en unipolade</string>
-    <string name="unipolade_title_left_no">2. Pied gauche sans semelle en unipolade</string>
-    <string name="unipolade_conditions">Condition : debout dans une position confortable,\n regard à l’horizontale, les bras le long du corps </string>
-    <string name="unipolade_time">Duree : 10 secondes</string>
-    <string name="unipolade_cadre">Cadre : isolé de toutes perturbations\n audibles et visuelles</string>
+    <string name="unipodale_title_right_with">2. Pied droit avec semelle en unipodale</string>
+    <string name="unipodale_title_right_no">2. Pied droit sans semelle en unipodale</string>
+    <string name="unipodale_title_left_with">2. Pied gauche avec semelle en unipodale</string>
+    <string name="unipodale_title_left_no">2. Pied gauche sans semelle en unipodale</string>
+    <string name="unipodale_conditions">Condition : debout dans une position confortable,\n regard à l’horizontale, les bras le long du corps </string>
+    <string name="unipodale_time">Duree : 10 secondes</string>
+    <string name="unipodale_cadre">Cadre : isolé de toutes perturbations\n audibles et visuelles</string>
 
     <string name="dynamic_title_right_with">3. Pied droit avec semelle en dynamique</string>
     <string name="dynamic_title_right_no">3. Pied droit sans semelle en dynamique</string>

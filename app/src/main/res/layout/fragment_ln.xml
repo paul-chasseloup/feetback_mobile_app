@@ -21,7 +21,7 @@
             android:layout_margin="50dp"
             android:textColor="@color/orange"
             android:textStyle="bold"
-            android:text="@string/bipolade_title_left_no" />
+            android:text="@string/bipodale_title_left_no" />
 
         <TextView
             android:id="@+id/ln_condition"
@@ -30,7 +30,7 @@
             android:layout_margin="10dp"
             android:textColor="#000000"
             android:gravity="center"
-            android:text="@string/bipolade_conditions" />
+            android:text="@string/bipodale_conditions" />
 
         <TextView
             android:id="@+id/ln_cadre"
@@ -39,7 +39,7 @@
             android:layout_margin="10dp"
             android:textColor="#000000"
             android:gravity="center"
-            android:text="@string/bipolade_cadre" />
+            android:text="@string/bipodale_cadre" />
 
         <TextView
             android:id="@+id/ln_time"
@@ -48,7 +48,7 @@
             android:layout_margin="10dp"
             android:textColor="#000000"
             android:gravity="center"
-            android:text="@string/bipolade_time" />
+            android:text="@string/bipodale_time" />
 
         <Chronometer
             android:id="@+id/ln_chrono"
