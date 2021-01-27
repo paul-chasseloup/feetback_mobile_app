@@ -193,12 +193,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (this.fragmentRightNo == null)
             this.fragmentRightNo = RightNoFragment.newInstance();
         this.startTransactionFragment(this.fragmentRightNo);
+
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     private void showRightWithFragment(){
         if (this.fragmentRightWith == null)
             this.fragmentRightWith = RightWithFragment.newInstance();
         this.startTransactionFragment(this.fragmentRightWith);
+
+        navigationView.getMenu().getItem(1).setChecked(true);
     }
 
     private void showLeftNoFragment(){
@@ -206,12 +210,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             this.fragmentLeftNo = LeftNoFragment.newInstance();
         this.startTransactionFragment(this.fragmentLeftNo);
 
+        navigationView.getMenu().getItem(2).setChecked(true);
+
     }
 
     private void showLeftWithFragment(){
         if (this.fragmentLeftWith == null)
             this.fragmentLeftWith = LeftWithFragment.newInstance();
         this.startTransactionFragment(this.fragmentLeftWith);
+
+        navigationView.getMenu().getItem(3).setChecked(true);
 
     }
 

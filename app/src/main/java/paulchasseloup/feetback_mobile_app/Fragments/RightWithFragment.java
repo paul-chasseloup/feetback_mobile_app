@@ -51,6 +51,7 @@ public class RightWithFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_rw,
                 container, false);
 
+
         this.title = rootView.findViewById(R.id.rw_title);
         this.conditions = rootView.findViewById(R.id.rw_condition);
         this.cadre = rootView.findViewById(R.id.rw_cadre);
@@ -61,9 +62,6 @@ public class RightWithFragment extends Fragment {
         this.next_btn = rootView.findViewById(R.id.rw_next);
         this.disconnect = rootView.findViewById(R.id.disconnectLink2);
 
-        setProtocolParams();
-
-        String title_text = this.title.getText().toString();
         this.time_max = "30";
 
 
@@ -133,6 +131,7 @@ public class RightWithFragment extends Fragment {
             @Override
             public void onClick(View view) {
               rw_chronometer.stop();
+                timing.setText("Analyse arretee");
             }
         });
 
@@ -160,7 +159,6 @@ public class RightWithFragment extends Fragment {
                     timing.setText(getResources().getString(R.string.bipolade_time));
                     cadre.setText(getResources().getString(R.string.bipolade_cadre));
                 }
-                setProtocolParams();
                 next_btn.setClickable(true);
             }
         });
@@ -180,67 +178,19 @@ public class RightWithFragment extends Fragment {
     }
 
     public void setTitle(String time){
-
-        switch (this.protocole_id){
-            case 0 :
-                if(time=="30"){
-                    Log.d("fgchvjkn", "in 30 " + time);
-                    title.setText(getResources().getString(R.string.bipolade_title_right_with));
-                }else if(time=="10"){
-                    Log.d("fgchvjkn", "in 10 "+getResources().getString(R.string.unipolade_title_right_with));
-                    title.setText(getResources().getString(R.string.unipolade_title_right_with));
-                }else{
-                    Log.d("fgchvjkn", "in 90 "+time);
-                    title.setText(getResources().getString(R.string.dynamic_title_right_with));
-                }
+        switch (time){
+            case "30" :
+                title.setText(getResources().getString(R.string.bipolade_title_right_with));
                 break;
-            case 1:
-                if(time=="30"){
-                    title.setText(getResources().getString(R.string.bipolade_title_left_with));
-                }else if(time=="10"){
-                    title.setText(getResources().getString(R.string.unipolade_title_left_with));
-                }else{
-                    title.setText(getResources().getString(R.string.dynamic_title_left_with));
-                }
+            case "10":
+                title.setText(getResources().getString(R.string.unipolade_title_right_with));
                 break;
-            case 2:
-                if(time=="30"){
-                    title.setText(getResources().getString(R.string.bipolade_title_left_no));
-                }else if(time=="10"){
-                    title.setText(getResources().getString(R.string.unipolade_title_left_no));
-                }else{
-                    title.setText(getResources().getString(R.string.dynamic_title_left_no));
-                }
-                break;
-            case 3:
-                if(time=="30"){
-                    title.setText(getResources().getString(R.string.bipolade_title_right_with));
-                }else if(time=="10"){
-                    title.setText(getResources().getString(R.string.unipolade_title_right_with));
-                }else{
-                    title.setText(getResources().getString(R.string.dynamic_title_right_with));
-                }
+            case "90":
+                title.setText(getResources().getString(R.string.dynamic_title_right_with));
                 break;
             default:
-
                 break;
         }
     }
 
-    public void setProtocolParams(){
-        String title_text = this.title.getText().toString();
-        if(title_text.contains("droit")){
-            if(title_text.contains("avec")){
-                this.protocole_id = 0;
-            }else{
-                this.protocole_id = 1;
-            }
-        }else if(title_text.contains("gauche")){
-            if(title_text.contains("avec")){
-                this.protocole_id = 2;
-            }else{
-                this.protocole_id = 3;
-            }
-        }
-    }
 }
