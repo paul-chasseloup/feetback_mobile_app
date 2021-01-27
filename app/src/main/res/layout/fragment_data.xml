@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".dataActivity" >
+
+    tools:context="Fragments.DataFragment" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,4 +85,12 @@
 
     </LinearLayout>
 
+    <!--
+    <fragment
+        android:id="@+id/data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="Fragments.DataFragment" />
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>
+

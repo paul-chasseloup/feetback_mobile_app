@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LandingPageActivity">
+    android:id="@+id/activity_landing_drawer_layout"
+    tools:context="Fragments.LandingPageFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +55,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:onClick="Login"
             android:text="@string/login"
             android:textColor="#1195ef" />
 

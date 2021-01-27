@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class dataActivity extends AppCompatActivity {
+public class DataActivity extends AppCompatActivity {
 
     private ToggleButton mStartStopBtn;
     private Button mCancelBtn;
@@ -86,7 +86,7 @@ public class dataActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data);
+        setContentView(R.layout.fragment_data);
 
         // Initialize objects' references
         mStartStopBtn = (ToggleButton) findViewById(R.id.toggleButton);
@@ -154,7 +154,7 @@ public class dataActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Return to landing page
-                Intent landingpageActivity = new Intent(dataActivity.this, MainActivity.class);
+                Intent landingpageActivity = new Intent(DataActivity.this, MainActivity.class);
                 startActivity(landingpageActivity);
             }
         });
