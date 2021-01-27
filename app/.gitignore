@@ -1,3 +1,7 @@
 /build
+<<<<<<< HEAD
 /.idea
 /node_modules
+=======
+node_modules
+>>>>>>> dev_liste_donnees_brutes

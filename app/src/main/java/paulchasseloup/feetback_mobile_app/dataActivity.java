@@ -1,4 +1,4 @@
-package paulchasseloup.feetback_mobile_app.Fragments;
+package paulchasseloup.feetback_mobile_app;
 
 import android.Manifest;
 import android.app.Activity;
@@ -7,20 +7,22 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+//import android.bluetooth.adapter.action.REQUEST_ENABLE;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.FileUpload;
@@ -31,7 +33,6 @@ import com.apollographql.apollo.sample.AddMeasureMutation;
 import com.apollographql.apollo.sample.UploadCSVMutation;
 import com.apollographql.apollo.sample.type.MeasureInput;
 import com.apollographql.apollo.sample.type.SensorInput;
-
 import com.opencsv.CSVWriter;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,25 +47,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import paulchasseloup.feetback_mobile_app.ApolloConnector;
-import paulchasseloup.feetback_mobile_app.R;
+public class dataActivity extends AppCompatActivity {
 
-public class RightNoFragment extends Fragment {
-
-
-    private TextView title;
-    private TextView conditions;
-    private TextView cadre;
-    private TextView timing;
-    private Chronometer rn_chronometer;
-    private Button start_btn;
-    private Button cancel_btn;
-    private Button next_btn;
-    private TextView disconnect;
-
-
-    private int protocole_id;
-    private String time_max;
+    private ToggleButton mStartStopBtn;
+    private Button mCancelBtn;
+    private TextView mDisconnect;
 
     // Sensors data storage
     private int currentSensor;
@@ -85,7 +72,7 @@ public class RightNoFragment extends Fragment {
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            //        Manifest.permission.REQUEST_ENABLE,
+    //        Manifest.permission.REQUEST_ENABLE,
     };
 
     private BluetoothAdapter mBluetoothAdapter;
@@ -100,88 +87,34 @@ public class RightNoFragment extends Fragment {
     private TextView bluetoothMsg;
     private String btDeviceName = "ESP32_Feetback";
 
-
-    public static RightNoFragment newInstance() {
-        return (new RightNoFragment());
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_data);
 
-        final View rootView = inflater.inflate(R.layout.fragment_rn,
-                container, false);
+        // Initialize objects' references
+     //   mStartStopBtn = (ToggleButton) findViewById(R.id.toggleButton);
+      //  mDisconnect = (TextView) findViewById(R.id.disconnectLink);
+       // mChronometer = (Chronometer) findViewById(R.id.chronometer);
+        //mCancelBtn = (Button) findViewById(R.id.cancelButton);
+        //bluetoothMsg = (TextView) findViewById(R.id.bluetoothMsg);
 
-        this.title = rootView.findViewById(R.id.rn_title);
-        this.conditions = rootView.findViewById(R.id.rn_condition);
-        this.cadre = rootView.findViewById(R.id.rn_cadre);
-        this.timing = rootView.findViewById(R.id.rn_time);
-        this.rn_chronometer = rootView.findViewById(R.id.rn_chrono);
-        this.start_btn = rootView.findViewById(R.id.rn_start);
-        this.cancel_btn = rootView.findViewById(R.id.rn_stop);
-        this.next_btn = rootView.findViewById(R.id.rn_next);
-        this.disconnect = rootView.findViewById(R.id.disconnectLinkRN);
-
-        this.time_max = "30";
-
-
-/*
         // Retrieve data from landing page
         Bundle extra = getIntent().getExtras();
         if(extra !=null) {
             userId = extra.getString("userId");
             token = extra.getString("token");
         }
-        */
 
-        rn_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+        mStartStopBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Start
+                if (isChecked) {
+                    // Initialize chronometer
+                    mChronometer.setBase(SystemClock.elapsedRealtime());
+                    mChronometer.stop();
+                    mChronometer.start();
 
-            @Override
-
-            public void onChronometerTick(Chronometer chronometer) {
-
-                final String finalTime_max = time_max;
-                // do something when chronometer changes
-                    if(chronometer.getText().toString().contains(finalTime_max)){
-                        chronometer.stop();
-                        timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
-                    }
-
-                //Récuperation données bluetooth
-                // Start BT connection
-                try {
-                    if (findBT()) {
-                        openBT();
-                        sendData("1");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                // End BT connection
-                   try {
-                       sendData("0");
-                       closeBT();
-                       writeCsv();
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-
-            }
-
-        });
-
-        start_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                timing.setText("Analyse en cours ...");
-                // Initialize chronometer
-                rn_chronometer.setBase(SystemClock.elapsedRealtime());
-                rn_chronometer.stop();
-                rn_chronometer.start();
-
-                    /*
                     // Start BT connection
                     try {
                         if (findBT()) {
@@ -190,89 +123,45 @@ public class RightNoFragment extends Fragment {
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }*/
+                    }
+                // Send
+                } else {
+                    mChronometer.setBase(SystemClock.elapsedRealtime());
+                    mChronometer.stop();
 
-
-                // End BT connection
-//                    try {
-                //                      sendData("0");
-                //                    closeBT();
-                //                  writeCsv();
-                //            } catch (IOException e) {
-                //              e.printStackTrace();
-                //        }
-                //  }
-            }
-        });
-
-        cancel_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rn_chronometer.setBase(SystemClock.elapsedRealtime());
-                rn_chronometer.stop();
-                timing.setText("Analyse arretee");
-            }
-        });
-
-        next_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rn_chronometer.setBase(SystemClock.elapsedRealtime());
-                rn_chronometer.stop();
-                String finalTime_max = time_max;
-
-                if (time_max.contains("01:30")) {
-                    time_max = "30";
-                    setTitle(time_max);
-                    conditions.setText(getResources().getString(R.string.bipodale_conditions));
-                    timing.setText(getResources().getString(R.string.bipodale_time));
-                    cadre.setText(getResources().getString(R.string.bipodale_cadre));
-                }else if (finalTime_max.contains("30")) {
-                    time_max = "10";
-                    setTitle(time_max);
-                    conditions.setText(getResources().getString(R.string.unipodale_conditions));
-                    timing.setText(getResources().getString(R.string.unipodale_time));
-                    cadre.setText(getResources().getString(R.string.unipodale_cadre));
-                }else if (finalTime_max.contains("10")) {
-                    time_max = "01:30";
-                    setTitle(time_max);
-                    conditions.setText(getResources().getString(R.string.dynamic_contitions));
-                    timing.setText(getResources().getString(R.string.dynamic_time));
-                    cadre.setText(getResources().getString(R.string.dynamic_cadre));
-                    next_btn.setClickable(true);
+                    // End BT connection
+                    try {
+                        sendData("0");
+                        closeBT();
+                        writeCsv();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-
         });
 
-        disconnect.setOnClickListener(new View.OnClickListener() {
+        mCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    sendData("0");
+                    closeBT();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mStartStopBtn.setChecked(false);
+            }
+        });
+
+        mDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Return to landing page
-                Fragment fragmentLandingActivity = LandingPageFragment.newInstance();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.activity_landing_drawer_layout, fragmentLandingActivity);
-                fragmentTransaction.commit();
+               // Intent landingpageActivity = new Intent(dataActivity.this, landingpageActivity.class);
+                //startActivity(landingpageActivity);
             }
         });
-
-        return rootView;
-    }
-
-    public void setTitle(String time){
-        switch (time){
-            case "30" :
-                    title.setText(getResources().getString(R.string.bipodale_title_right_no));
-                break;
-            case "10":
-                    title.setText(getResources().getString(R.string.unipodale_title_right_no));
-                break;
-            case "01:30":
-                title.setText(getResources().getString(R.string.dynamic_title_right_no));
-                break;
-            default:
-                break;
-        }
     }
 
     /**
@@ -476,10 +365,10 @@ public class RightNoFragment extends Fragment {
      */
     public void verifyStoragePermissions() {
         // Check if we have write permission
-        Activity activity = (Activity) this.getActivity();
+        Activity activity = (Activity) this;
         int permission1 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int permission2 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
-        //    int permission3 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.REQUEST_ENABLE);
+    //    int permission3 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.REQUEST_ENABLE);
 
 
         if (permission1 != PackageManager.PERMISSION_GRANTED && permission2 != PackageManager.PERMISSION_GRANTED) {
@@ -588,5 +477,4 @@ public class RightNoFragment extends Fragment {
                     }
                 });
     }
-
 }

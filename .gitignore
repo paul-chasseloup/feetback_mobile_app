@@ -12,5 +12,9 @@
 /captures
 .externalNativeBuild
 .cxx
+<<<<<<< HEAD
 /build
 /node_modules
+=======
+node_modules
+>>>>>>> dev_liste_donnees_brutes

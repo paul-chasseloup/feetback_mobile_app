@@ -13,6 +13,8 @@
 <!--    Bluetooth permissions to send and receive data from the device-->
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+   <!-- <uses-permission android:name="android.bluetooth.adapter.action.REQUEST_ENABLE" /> -->
+
 
     <application
 
