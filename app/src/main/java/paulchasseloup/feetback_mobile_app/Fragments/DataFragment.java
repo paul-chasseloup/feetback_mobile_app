@@ -21,13 +21,11 @@ public class DataFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
-        Log.d("sdfghjk", "in fragment");
         final View rootView = inflater.inflate(R.layout.fragment_data,
                 container, false);
 
-        Intent view = new Intent(getActivity(), DataActivity.class);
-        startActivity(view);
+      //  Intent view = new Intent(getActivity(), DataActivity.class);
+       // startActivity(view);
 
         return rootView;
 
