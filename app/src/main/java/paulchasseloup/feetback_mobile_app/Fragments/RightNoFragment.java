@@ -150,13 +150,6 @@ public class RightNoFragment extends Fragment {
             this.token = bundle.getString("token");
         }
 
-        // Retrieve data from landing page
-//        Bundle extra = getActivity().getExtras();
- //       if(extra !=null) {
-  //          userId = extra.getString("userId");
-   //         token = extra.getString("token");
-    //    }
-
 
         rn_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
 
