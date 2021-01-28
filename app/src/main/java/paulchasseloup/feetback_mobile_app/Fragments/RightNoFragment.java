@@ -429,9 +429,9 @@ public class RightNoFragment extends Fragment {
         Double min = Double.MAX_VALUE;
         Double max = Double.MIN_VALUE;
         Double sum = 0.0;
-        Input<List<Double>> sensorValues = null;
+        //Input<List<Double>> sensorValues = null;
         //List<Float> sensorValues = null;
-        //List<Double> sensorValues = null;
+        List<Double> sensorValues = null;
         //ArrayList<Double> sensorValues = null;
         //ArrayList<Float> sensorValues = null;
         for (String valString : sensors) {
@@ -444,11 +444,14 @@ public class RightNoFragment extends Fragment {
             if (val > max) {
                 max = val;
             }
-            //sensorValues.add(val);
+            sensorValues.add(val);
             //sensorValues.add(val);
             // Add values to get average
             sum += val;
         }
+
+        Input<List<Double>> MesTest = Input.fromNullable(sensorValues);
+        
 
 
         final SensorInput sensorInput = SensorInput
@@ -456,7 +459,7 @@ public class RightNoFragment extends Fragment {
                 .numberInput(Input.optional(num))
                 .posXInput(Input.optional(0.0))
                 .posYInput(Input.optional(0.0))
-                .listInput(sensorValues)
+                .listInput(MesTest)
                 .minPressureS(min)
                 .maxPressureS(max)
                 .averagePressureS(sum / sensors.size())
