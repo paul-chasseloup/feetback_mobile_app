@@ -525,7 +525,9 @@ public class RightNoFragment extends Fragment {
         Double sum = 0.0;
         //Input<List<Double>> sensorValues = null;
         //List<Float> sensorValues = null;
+
         List<Double> sensorValues = new ArrayList<Double>();
+
         //ArrayList<Double> sensorValues = null;
         //ArrayList<Float> sensorValues = null;
         for (String valString : sensors) {
