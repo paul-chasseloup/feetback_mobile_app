@@ -357,13 +357,13 @@ public class RightWithFragment extends Fragment {
     public void setTitle(String time){
         switch (time){
             case "30" :
-                title.setText(getResources().getString(R.string.bipodale_title_right_no));
+                title.setText(getResources().getString(R.string.bipodale_title_right_with));
                 break;
             case "10":
-                title.setText(getResources().getString(R.string.unipodale_title_right_no));
+                title.setText(getResources().getString(R.string.unipodale_title_right_with));
                 break;
             case "01:30":
-                title.setText(getResources().getString(R.string.dynamic_title_right_no));
+                title.setText(getResources().getString(R.string.dynamic_title_right_with));
                 break;
             default:
                 break;
