@@ -353,13 +353,13 @@ public class LeftNoFragment extends Fragment {
     public void setTitle(String time){
         switch (time){
             case "30" :
-                title.setText(getResources().getString(R.string.bipodale_title_right_no));
+                title.setText(getResources().getString(R.string.bipodale_title_left_no));
                 break;
             case "10":
-                title.setText(getResources().getString(R.string.unipodale_title_right_no));
+                title.setText(getResources().getString(R.string.unipodale_title_left_no));
                 break;
             case "01:30":
-                title.setText(getResources().getString(R.string.dynamic_title_right_no));
+                title.setText(getResources().getString(R.string.dynamic_title_left_no));
                 break;
             default:
                 break;
