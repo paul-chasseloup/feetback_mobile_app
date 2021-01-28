@@ -33,18 +33,34 @@ import com.apollographql.apollo.sample.type.MeasureInput;
 import com.apollographql.apollo.sample.type.SensorInput;
 import com.opencsv.CSVWriter;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import io.realm.Realm;
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.Credentials;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
 import paulchasseloup.feetback_mobile_app.ApolloConnector;
 import paulchasseloup.feetback_mobile_app.R;
 
@@ -150,8 +166,15 @@ public class LeftWithFragment extends Fragment {
                         timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
                     }
 
-                //Récuperation données bluetooth
-
+                // End BT connection
+                try {
+                    sendData("0");
+                    closeBT();
+                    writeLocalFile();
+                    //writeCsv();
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
         });
@@ -166,27 +189,17 @@ public class LeftWithFragment extends Fragment {
                 lw_chronometer.stop();
                 lw_chronometer.start();
 
-                    /*
-                    // Start BT connection
-                    try {
-                        if (findBT()) {
-                            openBT();
-                            sendData("1");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
+                //Récuperation données bluetooth
+                // Start BT connection
+                try {
+                    if (findBT()) {
+                        openBT();
+                        sendData("1");
+                    }
 
-
-                // End BT connection
-//                    try {
-                //                      sendData("0");
-                //                    closeBT();
-                //                  writeCsv();
-                //            } catch (IOException e) {
-                //              e.printStackTrace();
-                //        }
-                //  }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -258,6 +271,79 @@ public class LeftWithFragment extends Fragment {
             default:
                 break;
         }
+    }
+
+    private void writeLocalFile() throws JSONException {
+        verifyStoragePermissions();
+        String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+        // Initialize file
+        String date = DateFormat.getDateTimeInstance().format(new Date());
+        String fileName = "SensorsLocalDataFeetback"+date+".txt";
+        ////AJOUTER DATE ET HEURE AU NOM FICHIER
+        String filePath = "Documents" + File.separator + fileName;
+        Log.d("WRITE LOCAL", "filename : "+filePath);
+
+        final File f = new File(filePath);
+        FileReader fileReader = null;
+        FileWriter fileWriter = null;
+        BufferedReader bufferedReader = null;
+        BufferedWriter bufferedWriter = null;
+
+        findValues(listSensors1, 1);
+        findValues(listSensors2, 2);
+        findValues(listSensors3, 3);
+        findValues(listSensors4, 4);
+        findValues(listSensors5, 5);
+
+        Realm.init(getContext());
+        String appID = "ppe-salix";
+        App app = new App(new AppConfiguration.Builder(appID)
+                .build());
+
+        Credentials credentials = Credentials.anonymous();
+
+        app.loginAsync(credentials, result -> {
+            if(result.isSuccess()){
+                Log.v("QUICKSTART", "Successfully authenticated");
+                User user = app.currentUser();
+                MongoClient mongoClient = user.getMongoClient("mongodb-atlas");
+                MongoDatabase mongoDatabase = mongoClient.getDatabase("PPE");
+                MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("measures");
+
+                Document doc = new Document();
+                doc.put("_id", new ObjectId());
+                doc.append("patientId", this.userId);
+                doc.put("date", date);
+                doc.put("time", time_max);
+                doc.put("protocole", "leftWith");
+                doc.put("sensor1", this.listSensors1);
+                doc.put("sensor2", this.listSensors2);
+                doc.put("sensor3", this.listSensors3);
+                doc.put("sensor4", this.listSensors4);
+                doc.put("sensor5", this.listSensors5);
+
+                Log.d("fgchvjk",": "+this.listSensors1);
+                Log.d("OULALA", " : "+ doc.toJson().toString());
+                mongoCollection.insertOne(doc).getAsync(task -> {
+                    if(task.isSuccess()){
+                        Log.v("QUICKSTART", "Success"+task.get().getInsertedId());
+                    }else
+                    {
+                        Log.e("QUICKSTART", "Failed to log in. Error "+ task.getError().getErrorMessage());
+                    }
+                });
+            }else{
+                Log.e("QUICKSTART2", "Failed to log in. Error "+ result.getError());
+            }
+        });
+        Log.d("App ", " : "+ app);
+        // User user = app.currentUser();
+        //Log.d("USer ", " : "+user);
+
+
+        //String response = jsonObject.toString();
+
+
     }
 
     /**

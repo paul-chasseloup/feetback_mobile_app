@@ -8,8 +8,10 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,20 +33,41 @@ import com.apollographql.apollo.sample.AddMeasureMutation;
 import com.apollographql.apollo.sample.UploadCSVMutation;
 import com.apollographql.apollo.sample.type.MeasureInput;
 import com.apollographql.apollo.sample.type.SensorInput;
+
+
 import com.opencsv.CSVWriter;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.annotation.Documented;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import io.realm.Realm;
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.Credentials;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
 import paulchasseloup.feetback_mobile_app.ApolloConnector;
 import paulchasseloup.feetback_mobile_app.R;
 
@@ -61,6 +84,10 @@ public class RightWithFragment extends Fragment {
     private Button next_btn;
     private TextView disconnect;
 
+
+    private int protocole_id;
+    private String time_max;
+
     // Sensors data storage
     private int currentSensor;
     private ArrayList<String> listSensors1 = new ArrayList<>();
@@ -68,9 +95,6 @@ public class RightWithFragment extends Fragment {
     private ArrayList<String> listSensors3 = new ArrayList<>();
     private ArrayList<String> listSensors4 = new ArrayList<>();
     private ArrayList<String> listSensors5 = new ArrayList<>();
-
-    private int protocole_id;
-    private String time_max;
 
     private final String TAG = "DataActivity";
     private String userId;
@@ -97,16 +121,15 @@ public class RightWithFragment extends Fragment {
     private String btDeviceName = "ESP32_Feetback";
 
 
-    public static RightWithFragment newInstance() {
-        return (new RightWithFragment());
+    public static RightNoFragment newInstance() {
+        return (new RightNoFragment());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.fragment_rw,
+        final View rootView = inflater.inflate(R.layout.fragment_rn,
                 container, false);
-
 
         this.title = rootView.findViewById(R.id.rw_title);
         this.conditions = rootView.findViewById(R.id.rw_condition);
@@ -125,19 +148,15 @@ public class RightWithFragment extends Fragment {
         if (bundle != null) {
             this.userId = bundle.getString("userId");
             this.token = bundle.getString("token");
-        }else{
-            this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwMGVjYzVmMGExZDBkMDAxNzdlZjI0OSIsIm5hbWUiOiJMYXVyZW50IiwibGFzdG5hbWUiOiJEZWxpc2xlIiwiZW1haWwiOiJsZGVsaXNsZUBpbnNlZWMuY29tIiwicG9kaWF0cmlzdCI6ZmFsc2UsImlkIjoxMywicmVnaXN0ZXJEYXRlIjoiMjAyMS0wMS0yNSAxMzo0OToxOSIsImFub21hbHkiOmZhbHNlLCJhbm9tYWx5X3RocmVzaG9sZCI6MjAsInNlbnNvcl8xX3RvcF9wb3NpdGlvbiI6NDU0LCJzZW5zb3JfMl90b3BfcG9zaXRpb24iOjQ1NCwic2Vuc29yXzNfdG9wX3Bvc2l0aW9uIjo0NTQsInNlbnNvcl80X3RvcF9wb3NpdGlvbiI6NDU0LCJzZW5zb3JfNV90b3BfcG9zaXRpb24iOjQ1NCwic2Vuc29yXzFfbGVmdF9wb3NpdGlvbiI6NDEyLCJzZW5zb3JfMl9sZWZ0X3Bvc2l0aW9uIjo0NTIsInNlbnNvcl8zX2xlZnRfcG9zaXRpb24iOjQ5Miwic2Vuc29yXzRfbGVmdF9wb3NpdGlvbiI6NTMyLCJzZW5zb3JfNV9sZWZ0X3Bvc2l0aW9uIjo1NzIsImN1cnJlbnRQb2RpYXRyaXN0IjoiIn0sImlhdCI6MTYxMTc4NzA4NCwiZXhwIjoxNjExODczNDg0fQ.8u9yRKHlPmssn2X7OLMTpceuKi7jDQeAMOulSDJ30EQ";
-            this.userId = "13";
         }
 
-/*
         // Retrieve data from landing page
-        Bundle extra = getIntent().getExtras();
-        if(extra !=null) {
-            userId = extra.getString("userId");
-            token = extra.getString("token");
-        }
-        */
+//        Bundle extra = getActivity().getExtras();
+        //       if(extra !=null) {
+        //          userId = extra.getString("userId");
+        //         token = extra.getString("token");
+        //    }
+
 
         rw_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
 
@@ -146,14 +165,21 @@ public class RightWithFragment extends Fragment {
             public void onChronometerTick(Chronometer chronometer) {
 
                 final String finalTime_max = time_max;
-            // do something when chronometer changes
-                    if(chronometer.getText().toString().contains(finalTime_max)){
-                        chronometer.stop();
-                        timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
+                // do something when chronometer changes
+                if(chronometer.getText().toString().contains(finalTime_max)){
+                    chronometer.stop();
+                    timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
+
+                    // End BT connection
+                    try {
+                        sendData("0");
+                        closeBT();
+                        writeLocalFile();
+                        //writeCsv();
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
                     }
-
-
-                //Récuperation données bluetooth
+                }
 
             }
 
@@ -163,11 +189,23 @@ public class RightWithFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                    timing.setText("Analyse en cours ...");
-                    // Initialize chronometer
-                    rw_chronometer.setBase(SystemClock.elapsedRealtime());
-                    rw_chronometer.stop();
-                    rw_chronometer.start();
+                timing.setText("Analyse en cours ...");
+                // Initialize chronometer
+                rw_chronometer.setBase(SystemClock.elapsedRealtime());
+                rw_chronometer.stop();
+                rw_chronometer.start();
+
+                //Récuperation données bluetooth
+                // Start BT connection
+                try {
+                    if (findBT()) {
+                        openBT();
+                        sendData("1");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                     /*
                     // Start BT connection
@@ -181,15 +219,15 @@ public class RightWithFragment extends Fragment {
                     }*/
 
 
-                    // End BT connection
+                // End BT connection
 //                    try {
-  //                      sendData("0");
-    //                    closeBT();
-      //                  writeCsv();
-        //            } catch (IOException e) {
-          //              e.printStackTrace();
-            //        }
-              //  }
+                //                      sendData("0");
+                //                    closeBT();
+                //                  writeCsv();
+                //            } catch (IOException e) {
+                //              e.printStackTrace();
+                //        }
+                //  }
             }
         });
 
@@ -197,7 +235,7 @@ public class RightWithFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 rw_chronometer.setBase(SystemClock.elapsedRealtime());
-              rw_chronometer.stop();
+                rw_chronometer.stop();
                 timing.setText("Analyse arretee");
             }
         });
@@ -208,6 +246,7 @@ public class RightWithFragment extends Fragment {
                 rw_chronometer.setBase(SystemClock.elapsedRealtime());
                 rw_chronometer.stop();
                 String finalTime_max = time_max;
+
                 if (time_max.contains("01:30")) {
                     time_max = "30";
                     setTitle(time_max);
@@ -228,8 +267,8 @@ public class RightWithFragment extends Fragment {
                     cadre.setText(getResources().getString(R.string.dynamic_cadre));
                     next_btn.setClickable(true);
                 }
-                next_btn.setClickable(true);
             }
+
         });
 
         disconnect.setOnClickListener(new View.OnClickListener() {
@@ -246,16 +285,89 @@ public class RightWithFragment extends Fragment {
         return rootView;
     }
 
+    private void writeLocalFile() throws JSONException {
+        verifyStoragePermissions();
+        String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+        // Initialize file
+        String date = DateFormat.getDateTimeInstance().format(new Date());
+        String fileName = "SensorsLocalDataFeetback"+date+".txt";
+        ////AJOUTER DATE ET HEURE AU NOM FICHIER
+        String filePath = "Documents" + File.separator + fileName;
+        Log.d("WRITE LOCAL", "filename : "+filePath);
+
+        final File f = new File(filePath);
+        FileReader fileReader = null;
+        FileWriter fileWriter = null;
+        BufferedReader bufferedReader = null;
+        BufferedWriter bufferedWriter = null;
+
+        findValues(listSensors1, 1);
+        findValues(listSensors2, 2);
+        findValues(listSensors3, 3);
+        findValues(listSensors4, 4);
+        findValues(listSensors5, 5);
+
+        Realm.init(getContext());
+        String appID = "ppe-salix";
+        App app = new App(new AppConfiguration.Builder(appID)
+                .build());
+
+        Credentials credentials = Credentials.anonymous();
+
+        app.loginAsync(credentials, result -> {
+            if(result.isSuccess()){
+                Log.v("QUICKSTART", "Successfully authenticated");
+                User user = app.currentUser();
+                MongoClient mongoClient = user.getMongoClient("mongodb-atlas");
+                MongoDatabase mongoDatabase = mongoClient.getDatabase("PPE");
+                MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("measures");
+
+                Document doc = new Document();
+                doc.put("_id", new ObjectId());
+                doc.append("patientId", this.userId);
+                doc.put("date", date);
+                doc.put("time", time_max);
+                doc.put("protocole", "rightWith");
+                doc.put("sensor1", this.listSensors1);
+                doc.put("sensor2", this.listSensors2);
+                doc.put("sensor3", this.listSensors3);
+                doc.put("sensor4", this.listSensors4);
+                doc.put("sensor5", this.listSensors5);
+
+                Log.d("fgchvjk",": "+this.listSensors1);
+                Log.d("OULALA", " : "+ doc.toJson().toString());
+                mongoCollection.insertOne(doc).getAsync(task -> {
+                    if(task.isSuccess()){
+                        Log.v("QUICKSTART", "Success"+task.get().getInsertedId());
+                    }else
+                    {
+                        Log.e("QUICKSTART", "Failed to log in. Error "+ task.getError().getErrorMessage());
+                    }
+                });
+            }else{
+                Log.e("QUICKSTART2", "Failed to log in. Error "+ result.getError());
+            }
+        });
+        Log.d("App ", " : "+ app);
+        // User user = app.currentUser();
+        //Log.d("USer ", " : "+user);
+
+
+        //String response = jsonObject.toString();
+
+
+    }
+
     public void setTitle(String time){
         switch (time){
             case "30" :
-                title.setText(getResources().getString(R.string.bipodale_title_right_with));
+                title.setText(getResources().getString(R.string.bipodale_title_right_no));
                 break;
             case "10":
-                title.setText(getResources().getString(R.string.unipodale_title_right_with));
+                title.setText(getResources().getString(R.string.unipodale_title_right_no));
                 break;
             case "01:30":
-                title.setText(getResources().getString(R.string.dynamic_title_right_with));
+                title.setText(getResources().getString(R.string.dynamic_title_right_no));
                 break;
             default:
                 break;
@@ -284,16 +396,16 @@ public class RightWithFragment extends Fragment {
         if(pairedDevices.size() > 0) {
             for(BluetoothDevice device : pairedDevices) {
                 if(device.getName().equals(btDeviceName)) {
-                    bluetoothMsg.setText("Bluetooth Device Found");
+                    // bluetoothMsg.setText("Bluetooth Device Found");
                     deviceFound = true;
                     mmDevice = device;
                     break;
                 }
             }
         }
-        if (!deviceFound) {
+        /*if (!deviceFound) {
             bluetoothMsg.setText("Bluetooth NOT Device Found");
-        }
+        }*/
         return deviceFound;
     }
 
@@ -303,7 +415,7 @@ public class RightWithFragment extends Fragment {
      * @throws IOException
      */
     private void openBT() throws IOException {
-        bluetoothMsg.setText("");
+        //bluetoothMsg.setText("");
         UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //Standard SerialPortService ID
         mmSocket = mmDevice.createRfcommSocketToServiceRecord(uuid);
         mmSocket.connect();
@@ -411,9 +523,9 @@ public class RightWithFragment extends Fragment {
         Double min = Double.MAX_VALUE;
         Double max = Double.MIN_VALUE;
         Double sum = 0.0;
-        Input<List<Double>> sensorValues = null;
+        //Input<List<Double>> sensorValues = null;
         //List<Float> sensorValues = null;
-        //List<Double> sensorValues = null;
+        List<Double> sensorValues = new ArrayList<Double>();
         //ArrayList<Double> sensorValues = null;
         //ArrayList<Float> sensorValues = null;
         for (String valString : sensors) {
@@ -426,19 +538,39 @@ public class RightWithFragment extends Fragment {
             if (val > max) {
                 max = val;
             }
-            //sensorValues.add(val);
+            sensorValues.add(val);
             //sensorValues.add(val);
             // Add values to get average
             sum += val;
         }
 
+        switch (num){
+            case 1 :
+                this.listSensors1 = sensors;
+                break;
+            case 2 :
+                this.listSensors2 = sensors;
+                break;
+            case 3 :
+                this.listSensors3 = sensors;
+                break;
+            case 4:
+                this.listSensors4 = sensors;
+                break;
+            case 5:
+                this.listSensors5 = sensors;
+            default:
+                break;
+
+        }
+        Input<List<Double>> MesTes = Input.fromNullable(sensorValues);
 
         final SensorInput sensorInput = SensorInput
                 .builder()
                 .numberInput(Input.optional(num))
                 .posXInput(Input.optional(0.0))
                 .posYInput(Input.optional(0.0))
-                .listInput(sensorValues)
+                .listInput(MesTes)
                 .minPressureS(min)
                 .maxPressureS(max)
                 .averagePressureS(sum / sensors.size())
