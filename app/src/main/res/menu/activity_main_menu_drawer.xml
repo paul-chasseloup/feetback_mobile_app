@@ -5,19 +5,19 @@ tools:showIn="navigation_view">
 
 <group android:checkableBehavior="single">
     <item
-        android:id="@+id/nav_right_no"
+        android:id="@+id/activity_main_menu_right_no"
         android:icon="@drawable/righ_foot_no"
         android:title="@string/protocole1" />
     <item
-        android:id="@+id/nav_right_with"
+        android:id="@+id/activity_main_menu_right_with"
         android:icon="@drawable/right_foot_with"
         android:title="@string/protocole2" />
     <item
-        android:id="@+id/nav_left_no"
+        android:id="@+id/activity_main_menu_left_no"
         android:icon="@drawable/left_foot_no"
         android:title="@string/protocole3" />
     <item
-        android:id="@+id/nav_left_with"
+        android:id="@+id/activity_main_menu_left_with"
         android:icon="@drawable/left_foot_with"
         android:title="@string/protocole4" />
 </group>
