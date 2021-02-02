@@ -128,7 +128,7 @@ public class RightWithFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.fragment_rn,
+        final View rootView = inflater.inflate(R.layout.fragment_rw,
                 container, false);
 
         this.title = rootView.findViewById(R.id.rw_title);

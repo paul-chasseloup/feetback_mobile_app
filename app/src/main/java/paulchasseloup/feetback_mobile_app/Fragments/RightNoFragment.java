@@ -144,7 +144,6 @@ public class RightNoFragment extends Fragment {
         this.next_btn = rootView.findViewById(R.id.rn_next);
         this.disconnect = rootView.findViewById(R.id.disconnectLinkRN);
 
-
         this.time_max = "30";
 
         Bundle bundle = this.getArguments();
@@ -160,23 +159,20 @@ public class RightNoFragment extends Fragment {
 
                 final String finalTime_max = time_max;
                 // do something when chronometer changes
-                    if(chronometer.getText().toString().contains(finalTime_max)){
-                        chronometer.stop();
-                        timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
-
-                        // End BT connection
-                        try {
-                            sendData("0");
-                            closeBT();
-                            writeLocalFile();
-                            //writeCsv();
-                        } catch (IOException | JSONException e) {
-                            e.printStackTrace();
-                        }
+                if(chronometer.getText().toString().contains(finalTime_max)){
+                    chronometer.stop();
+                    timing.setText("Analyse terminee ! Cliquez sur SUIVANT pour continuer");
+                    // End BT connection
+                    try {
+                        sendData("0");
+                        closeBT();
+                        writeLocalFile();
+                        //writeCsv();
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
                     }
-
+                }
             }
-
         });
 
         start_btn.setOnClickListener(new View.OnClickListener() {
