@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -90,6 +91,8 @@ public class LeftNoFragment extends Fragment {
     private ArrayList<String> listSensors3 = new ArrayList<>();
     private ArrayList<String> listSensors4 = new ArrayList<>();
     private ArrayList<String> listSensors5 = new ArrayList<>();
+
+    private String sensorsAvg[] = new String[5];
 
     private final String TAG = "DataActivity";
     private String userId;
@@ -424,25 +427,19 @@ public class LeftNoFragment extends Fragment {
      *
      * @param data sensor's reading
      */
-    private void updateSensorList(String data) {
-        switch (currentSensor) {
-            case 2:
-                listSensors2.add(data);
-                break;
-            case 3:
-                listSensors3.add(data);
-                break;
-            case 4:
-                listSensors4.add(data);
-                break;
-            case 5:
-                listSensors5.add(data);
-                break;
-            default:
-                listSensors1.add(data);
-                currentSensor = 1;
+    private void updateSensorList(String data, String sensorNumber) {
+
+        if(sensorNumber.contains("1")){
+            listSensors1.add(data);
+        } else if(sensorNumber.contains("2")){
+            listSensors2.add(data);
+        } else if(sensorNumber.contains("3")){
+            listSensors3.add(data);
+        } else if(sensorNumber.contains("4")){
+            listSensors4.add(data);
+        } else if(sensorNumber.contains("5")){
+            listSensors5.add(data);
         }
-        currentSensor++;
     }
 
     /**
@@ -475,8 +472,11 @@ public class LeftNoFragment extends Fragment {
                                     {
                                         public void run()
                                         {
+                                            String[] dataSplit = data.split(":");
+                                            final String loadedData = dataSplit[1];
+                                            String sensorNumber  = dataSplit[0];
                                             // save data in corresponding data list
-                                            updateSensorList(data);
+                                            updateSensorList(loadedData, sensorNumber);
                                         }
                                     });
                                 } else {
@@ -513,7 +513,7 @@ public class LeftNoFragment extends Fragment {
      * @param num sensor's number
      * @return SensorInput
      */
-    private SensorInput findValues(ArrayList<String> sensors, int num) {
+    private void findValues(ArrayList<String> sensors, int num) {
         Double min = Double.MAX_VALUE;
         Double max = Double.MIN_VALUE;
         Double sum = 0.0;
@@ -540,38 +540,32 @@ public class LeftNoFragment extends Fragment {
             sum += val;
         }
 
+        sum = sum / sensorValues.size();
+        DecimalFormat df = new DecimalFormat("0.00");
         switch (num){
             case 1 :
                 this.listSensors1 = sensors;
+                this.sensorsAvg[0] = df.format(sum);
                 break;
             case 2 :
                 this.listSensors2 = sensors;
+                this.sensorsAvg[1] = df.format(sum);
                 break;
             case 3 :
                 this.listSensors3 = sensors;
+                this.sensorsAvg[2] = df.format(sum);
                 break;
             case 4:
                 this.listSensors4 = sensors;
+                this.sensorsAvg[3] = df.format(sum);
                 break;
             case 5:
                 this.listSensors5 = sensors;
+                this.sensorsAvg[4] = df.format(sum);
             default:
                 break;
 
         }
-        Input<List<Double>> MesTes = Input.fromNullable(sensorValues);
-
-        final SensorInput sensorInput = SensorInput
-                .builder()
-                .numberInput(Input.optional(num))
-                .posXInput(Input.optional(0.0))
-                .posYInput(Input.optional(0.0))
-                .listInput(MesTes)
-                .minPressureS(min)
-                .maxPressureS(max)
-                .averagePressureS(sum / sensors.size())
-                .build();
-        return sensorInput;
     }
 
     /**
@@ -607,101 +601,5 @@ public class LeftNoFragment extends Fragment {
         }
     }
 
-    /**
-     * Create csv file with sensors' data
-     *
-     * @throws IOException
-     */
-    private void writeCsv() throws IOException {
-        verifyStoragePermissions();
-        String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-
-        // Initialize file
-        String fileName = "SensorsDataFeetback.csv";
-        String filePath = baseDir + File.separator + fileName;
-        final File f = new File(filePath);
-        CSVWriter writer;
-        FileWriter mFileWriter;
-
-        FileWriter fw = new FileWriter(filePath);
-        writer = new CSVWriter(fw);
-
-        // Write data
-        writer.writeNext(listSensors1.toArray(new String[listSensors1.size()]));
-        writer.writeNext(listSensors2.toArray(new String[listSensors2.size()]));
-        writer.writeNext(listSensors3.toArray(new String[listSensors3.size()]));
-        writer.writeNext(listSensors4.toArray(new String[listSensors4.size()]));
-        writer.writeNext(listSensors5.toArray(new String[listSensors5.size()]));
-        writer.close();
-
-        final  Input<FileUpload> fileInputType = Input.optional(new FileUpload("text/csv", f));
-
-        ApolloConnector.setupApollo().mutate(
-                UploadCSVMutation
-                        .builder()
-                        .fileInput(fileInputType)
-                        .token(token)
-                        .build()
-        )
-                .enqueue(new ApolloCall.Callback<UploadCSVMutation.Data>() {
-
-                    @Override
-                    public void onResponse(@NotNull Response<UploadCSVMutation.Data> response) {
-                        Log.d(TAG, "Response: " + response.data().uploadCSV());
-                        try {
-                            f.delete();
-                            addMeasure(response.data().uploadCSV().fileCompleteName());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        Log.d(TAG, "Server Exception " + e.getMessage(), e);
-                    }
-                });
-    }
-
-    /**
-     * Send measure to server
-     *
-     * @param fileCompleteName
-     * @throws IOException
-     */
-    private void addMeasure(String fileCompleteName) throws IOException {
-        List<SensorInput> sensorList = new ArrayList<>();
-        sensorList.add(findValues(listSensors1, 1));
-        sensorList.add(findValues(listSensors2, 2));
-        sensorList.add(findValues(listSensors3, 3));
-        sensorList.add(findValues(listSensors4, 4));
-        sensorList.add(findValues(listSensors5, 5));
-
-        final MeasureInput measureInput = MeasureInput
-                .builder()
-                .patientId(userId)
-                .csv(fileCompleteName)
-                .sensors(sensorList)
-                .build();
-
-        final  Input<MeasureInput> measureInputType = Input.optional(measureInput);
-        ApolloConnector.setupApollo().mutate(
-                AddMeasureMutation
-                        .builder()
-                        .measureInput(measureInputType)
-                        .build()
-        )
-                .enqueue(new ApolloCall.Callback<AddMeasureMutation.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<AddMeasureMutation.Data> response) {
-                        Log.d(TAG, "Response: " + response.data().addMeasure());
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        Log.d(TAG, "Server Exception " + e.getMessage(), e);
-                    }
-                });
-    }
 
 }

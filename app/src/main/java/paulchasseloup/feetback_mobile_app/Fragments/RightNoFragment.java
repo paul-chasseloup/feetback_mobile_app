@@ -473,7 +473,6 @@ public class RightNoFragment extends Fragment {
                                             String[] dataSplit = data.split(":");
                                             final String loadedData = dataSplit[1];
                                             String sensorNumber  = dataSplit[0];
-                                            Log.d("in update data $ ", "split = "+dataSplit[0]+ " data $ "+dataSplit[1]);
                                             // save data in corresponding data list
                                             updateSensorList(loadedData, sensorNumber);
                                         }
@@ -512,7 +511,7 @@ public class RightNoFragment extends Fragment {
      * @param num sensor's number
      * @return SensorInput
      */
-    private SensorInput findValues(ArrayList<String> sensors, int num) {
+    private void findValues(ArrayList<String> sensors, int num) {
         Double min = Double.MAX_VALUE;
         Double max = Double.MIN_VALUE;
         Double sum = 0.0;
@@ -565,19 +564,6 @@ public class RightNoFragment extends Fragment {
                  break;
 
          }
-        Input<List<Double>> MesTes = Input.fromNullable(sensorValues);
-
-        final SensorInput sensorInput = SensorInput
-                .builder()
-                .numberInput(Input.optional(num))
-                .posXInput(Input.optional(0.0))
-                .posYInput(Input.optional(0.0))
-                .listInput(MesTes)
-                .minPressureS(min)
-                .maxPressureS(max)
-                .averagePressureS(sum / sensors.size())
-                .build();
-        return sensorInput;
     }
 
     /**
@@ -613,101 +599,5 @@ public class RightNoFragment extends Fragment {
         }
     }
 
-    /**
-     * Create csv file with sensors' data
-     *
-     * @throws IOException
-     */
-    private void writeCsv() throws IOException {
-        verifyStoragePermissions();
-        String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-
-        // Initialize file
-        String fileName = "SensorsDataFeetback.csv";
-        String filePath = baseDir + File.separator + fileName;
-        final File f = new File(filePath);
-        CSVWriter writer;
-        FileWriter mFileWriter;
-
-        FileWriter fw = new FileWriter(filePath);
-        writer = new CSVWriter(fw);
-
-        // Write data
-        writer.writeNext(listSensors1.toArray(new String[listSensors1.size()]));
-        writer.writeNext(listSensors2.toArray(new String[listSensors2.size()]));
-        writer.writeNext(listSensors3.toArray(new String[listSensors3.size()]));
-        writer.writeNext(listSensors4.toArray(new String[listSensors4.size()]));
-        writer.writeNext(listSensors5.toArray(new String[listSensors5.size()]));
-        writer.close();
-
-        final  Input<FileUpload> fileInputType = Input.optional(new FileUpload("text/csv", f));
-
-        ApolloConnector.setupApollo().mutate(
-                UploadCSVMutation
-                        .builder()
-                        .fileInput(fileInputType)
-                        .token(token)
-                        .build()
-        )
-                .enqueue(new ApolloCall.Callback<UploadCSVMutation.Data>() {
-
-                    @Override
-                    public void onResponse(@NotNull Response<UploadCSVMutation.Data> response) {
-                        Log.d(TAG, "Response: " + response.data().uploadCSV());
-                        try {
-                            f.delete();
-                            addMeasure(response.data().uploadCSV().fileCompleteName());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        Log.d(TAG, "Server Exception " + e.getMessage(), e);
-                    }
-                });
-    }
-
-    /**
-     * Send measure to server
-     *
-     * @param fileCompleteName
-     * @throws IOException
-     */
-    private void addMeasure(String fileCompleteName) throws IOException {
-        List<SensorInput> sensorList = new ArrayList<>();
-        sensorList.add(findValues(listSensors1, 1));
-        sensorList.add(findValues(listSensors2, 2));
-        sensorList.add(findValues(listSensors3, 3));
-        sensorList.add(findValues(listSensors4, 4));
-        sensorList.add(findValues(listSensors5, 5));
-
-        final MeasureInput measureInput = MeasureInput
-                .builder()
-                .patientId(userId)
-                .csv(fileCompleteName)
-                .sensors(sensorList)
-                .build();
-
-        final  Input<MeasureInput> measureInputType = Input.optional(measureInput);
-        ApolloConnector.setupApollo().mutate(
-                AddMeasureMutation
-                        .builder()
-                        .measureInput(measureInputType)
-                        .build()
-        )
-                .enqueue(new ApolloCall.Callback<AddMeasureMutation.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<AddMeasureMutation.Data> response) {
-                        Log.d(TAG, "Response: " + response.data().addMeasure());
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        Log.d(TAG, "Server Exception " + e.getMessage(), e);
-                    }
-                });
-    }
 
 }
