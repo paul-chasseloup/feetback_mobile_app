@@ -141,8 +141,8 @@ public class RightNoFragment extends Fragment {
         this.next_btn = rootView.findViewById(R.id.rn_next);
         this.disconnect = rootView.findViewById(R.id.disconnectLinkRN);
 
-        this.time_max = "30";
 
+        this.time_max = "30";
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -150,11 +150,9 @@ public class RightNoFragment extends Fragment {
             this.token = bundle.getString("token");
         }
 
-
         rn_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
 
             @Override
-
             public void onChronometerTick(Chronometer chronometer) {
 
                 final String finalTime_max = time_max;
@@ -327,8 +325,11 @@ public class RightNoFragment extends Fragment {
                 doc.put("sensor4", this.listSensors4);
                 doc.put("sensor5", this.listSensors5);
 
-                Log.d("fgchvjk",": "+this.listSensors1);
-                Log.d("OULALA", " : "+ doc.toJson().toString());
+                String str = "capteur 1 : "+ this.listSensors1 + "\n capteur 2 : "+ this.listSensors2 +
+                        "\ncapteur 3 : "+ this.listSensors3 + "\n capteur 4 : "+ this.listSensors4;
+
+                this.timing.setText(str.toString());
+
                 mongoCollection.insertOne(doc).getAsync(task -> {
                     if(task.isSuccess()){
                         Log.v("QUICKSTART", "Success"+task.get().getInsertedId());

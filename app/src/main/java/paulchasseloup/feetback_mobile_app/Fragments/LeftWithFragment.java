@@ -116,8 +116,8 @@ public class LeftWithFragment extends Fragment {
     private String btDeviceName = "ESP32_Feetback";
 
 
-    public static RightNoFragment newInstance() {
-        return (new RightNoFragment());
+    public static LeftWithFragment newInstance() {
+        return (new LeftWithFragment());
     }
 
     @Override
@@ -135,6 +135,13 @@ public class LeftWithFragment extends Fragment {
         this.cancel_btn = rootView.findViewById(R.id.lw_stop);
         this.next_btn = rootView.findViewById(R.id.lw_next);
         this.disconnect = rootView.findViewById(R.id.disconnectLinkLW);
+
+        this.title.setText(R.string.bipodale_title_left_with);
+        this.conditions.setText(R.string.bipodale_conditions);
+        this.cadre.setText(R.string.bipodale_cadre);
+        this.timing.setText(R.string.bipodale_time);
+
+        Log.d("Left With ", "IN");
 
         this.time_max = "30";
 
@@ -327,8 +334,9 @@ public class LeftWithFragment extends Fragment {
                 doc.put("sensor4", this.listSensors4);
                 doc.put("sensor5", this.listSensors5);
 
-                Log.d("fgchvjk",": "+this.listSensors1);
-                Log.d("OULALA", " : "+ doc.toJson().toString());
+                String str = "capteur 1 : "+ this.listSensors1 + "\n capteur 2 : "+ this.listSensors2 +
+                        "\ncapteur 3 : "+ this.listSensors3 + "\n capteur 4 : "+ this.listSensors4;
+
                 mongoCollection.insertOne(doc).getAsync(task -> {
                     if(task.isSuccess()){
                         Log.v("QUICKSTART", "Success"+task.get().getInsertedId());

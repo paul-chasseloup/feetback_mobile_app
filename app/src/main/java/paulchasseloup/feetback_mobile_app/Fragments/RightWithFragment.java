@@ -121,8 +121,8 @@ public class RightWithFragment extends Fragment {
     private String btDeviceName = "ESP32_Feetback";
 
 
-    public static RightNoFragment newInstance() {
-        return (new RightNoFragment());
+    public static RightWithFragment newInstance() {
+        return (new RightWithFragment());
     }
 
     @Override
@@ -143,21 +143,12 @@ public class RightWithFragment extends Fragment {
 
         this.time_max = "30";
 
-            this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwMGVjYzVmMGExZDBkMDAxNzdlZjI0OSIsIm5hbWUiOiJMYXVyZW50IiwibGFzdG5hbWUiOiJEZWxpc2xlIiwiZW1haWwiOiJsZGVsaXNsZUBpbnNlZWMuY29tIiwicG9kaWF0cmlzdCI6ZmFsc2UsImlkIjoxMywicmVnaXN0ZXJEYXRlIjoiMjAyMS0wMS0yNSAxMzo0OToxOSIsImFub21hbHkiOmZhbHNlLCJhbm9tYWx5X3RocmVzaG9sZCI6MjAsInNlbnNvcl8xX3RvcF9wb3NpdGlvbiI6NDU0LCJzZW5zb3JfMl90b3BfcG9zaXRpb24iOjQ1NCwic2Vuc29yXzNfdG9wX3Bvc2l0aW9uIjo0NTQsInNlbnNvcl80X3RvcF9wb3NpdGlvbiI6NDU0LCJzZW5zb3JfNV90b3BfcG9zaXRpb24iOjQ1NCwic2Vuc29yXzFfbGVmdF9wb3NpdGlvbiI6NDEyLCJzZW5zb3JfMl9sZWZ0X3Bvc2l0aW9uIjo0NTIsInNlbnNvcl8zX2xlZnRfcG9zaXRpb24iOjQ5Miwic2Vuc29yXzRfbGVmdF9wb3NpdGlvbiI6NTMyLCJzZW5zb3JfNV9sZWZ0X3Bvc2l0aW9uIjo1NzIsImN1cnJlbnRQb2RpYXRyaXN0IjoiIn0sImlhdCI6MTYxMTc4NzA4NCwiZXhwIjoxNjExODczNDg0fQ.8u9yRKHlPmssn2X7OLMTpceuKi7jDQeAMOulSDJ30EQ";
-            this.userId = "13";
-
-        // Retrieve data from landing page
-//        Bundle extra = getActivity().getExtras();
-        //       if(extra !=null) {
-        //          userId = extra.getString("userId");
-        //         token = extra.getString("token");
-        //    }
-
+        this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwMGVjYzVmMGExZDBkMDAxNzdlZjI0OSIsIm5hbWUiOiJMYXVyZW50IiwibGFzdG5hbWUiOiJEZWxpc2xlIiwiZW1haWwiOiJsZGVsaXNsZUBpbnNlZWMuY29tIiwicG9kaWF0cmlzdCI6ZmFsc2UsImlkIjoxMywicmVnaXN0ZXJEYXRlIjoiMjAyMS0wMS0yNSAxMzo0OToxOSIsImFub21hbHkiOmZhbHNlLCJhbm9tYWx5X3RocmVzaG9sZCI6MjAsInNlbnNvcl8xX3RvcF9wb3NpdGlvbiI6NDU0LCJzZW5zb3JfMl90b3BfcG9zaXRpb24iOjQ1NCwic2Vuc29yXzNfdG9wX3Bvc2l0aW9uIjo0NTQsInNlbnNvcl80X3RvcF9wb3NpdGlvbiI6NDU0LCJzZW5zb3JfNV90b3BfcG9zaXRpb24iOjQ1NCwic2Vuc29yXzFfbGVmdF9wb3NpdGlvbiI6NDEyLCJzZW5zb3JfMl9sZWZ0X3Bvc2l0aW9uIjo0NTIsInNlbnNvcl8zX2xlZnRfcG9zaXRpb24iOjQ5Miwic2Vuc29yXzRfbGVmdF9wb3NpdGlvbiI6NTMyLCJzZW5zb3JfNV9sZWZ0X3Bvc2l0aW9uIjo1NzIsImN1cnJlbnRQb2RpYXRyaXN0IjoiIn0sImlhdCI6MTYxMTc4NzA4NCwiZXhwIjoxNjExODczNDg0fQ.8u9yRKHlPmssn2X7OLMTpceuKi7jDQeAMOulSDJ30EQ";
+        this.userId = "13";
 
         rw_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
 
             @Override
-
             public void onChronometerTick(Chronometer chronometer) {
 
                 final String finalTime_max = time_max;
@@ -330,8 +321,9 @@ public class RightWithFragment extends Fragment {
                 doc.put("sensor4", this.listSensors4);
                 doc.put("sensor5", this.listSensors5);
 
-                Log.d("fgchvjk",": "+this.listSensors1);
-                Log.d("OULALA", " : "+ doc.toJson().toString());
+                String str = "capteur 1 : "+ this.listSensors1 + "\n capteur 2 : "+ this.listSensors2 +
+                        "\ncapteur 3 : "+ this.listSensors3 + "\n capteur 4 : "+ this.listSensors4;
+
                 mongoCollection.insertOne(doc).getAsync(task -> {
                     if(task.isSuccess()){
                         Log.v("QUICKSTART", "Success"+task.get().getInsertedId());

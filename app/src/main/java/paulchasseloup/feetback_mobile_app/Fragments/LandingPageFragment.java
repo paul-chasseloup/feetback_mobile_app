@@ -109,9 +109,8 @@ public class LandingPageFragment extends Fragment {
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
 
-                        Log.d("TAG", " IN Failure");
                         labelMessage.setText("Server Error!");
-                        //Log.d(TAG, "Exception " + e.getMessage(), e);
+                        Log.d("TAG", "Exception " + e.getMessage(), e);
                     }
                 });
     }

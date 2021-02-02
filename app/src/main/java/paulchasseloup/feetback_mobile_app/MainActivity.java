@@ -102,16 +102,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         switch (id){
-            case R.id.nav_right_no :
+            case R.id.activity_main_menu_right_no :
                 this.showFragment(FRAGMENT_RIGHT_NO);
                 break;
-            case R.id.nav_right_with:
+            case R.id.activity_main_menu_right_with:
                 this.showFragment(FRAGMENT_RIGHT_WHITH);
                 break;
-            case R.id.nav_left_no:
+            case R.id.activity_main_menu_left_no:
                 this.showFragment(FRAGMENT_LEFT_NO);
                 break;
-            case R.id.nav_left_with:
+            case R.id.activity_main_menu_left_with:
                 this.showFragment(FRAGMENT_LEFT_WITH);
                 break;
             default:
@@ -167,17 +167,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Show fragment according an Identifier
     private void showFragment(int fragmentIdentifier){
+
+        Log.d("Main" , "in showFragment "+fragmentIdentifier);
         switch (fragmentIdentifier){
             case FRAGMENT_RIGHT_NO:
+                Log.d("Main" , "in rn ");
                 this.showRightNoFragment();
                 break;
             case FRAGMENT_RIGHT_WHITH :
+                Log.d("Main" , "in rw ");
                 this.showRightWithFragment();
                 break;
             case FRAGMENT_LEFT_NO:
+                Log.d("Main" , "in ln ");
                 this.showLeftNoFragment();
                 break;
             case FRAGMENT_LEFT_WITH:
+                Log.d("Main" , "in lw ");
                 this.showLeftWithFragment();
                 break;
             case FRAGMENT_LANDING_PAGE:
@@ -207,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void showLeftNoFragment(){
         if (this.fragmentLeftNo == null)
+            Log.d(TAG, "in new insta,ce left no");
             this.fragmentLeftNo = LeftNoFragment.newInstance();
         this.startTransactionFragment(this.fragmentLeftNo);
 
