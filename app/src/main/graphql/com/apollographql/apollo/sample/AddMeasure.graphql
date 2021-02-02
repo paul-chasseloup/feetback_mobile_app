@@ -5,6 +5,7 @@ mutation AddMeasure ($measure: MeasureInput) {
         number,
         posX,
         posY,
+        list,
         averagePressureS,
         minPressureS,
         maxPressureS

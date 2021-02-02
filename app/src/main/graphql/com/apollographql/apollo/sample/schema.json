@@ -761,6 +761,26 @@
               "deprecationReason": null
             },
             {
+              "name": "list",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": "Float",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Float",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "averagePressureS",
               "description": "",
               "args": [],
@@ -1295,6 +1315,19 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "list",
+              "description": "",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Float",
+                  "ofType": null
+                }
+              }
             },
             {
               "name": "averagePressureS",

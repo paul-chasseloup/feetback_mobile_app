@@ -14,7 +14,6 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.apollographql.apollo.sample.LoginQuery;
 import com.apollographql.apollo.sample.RegisterMutation;
 import com.apollographql.apollo.sample.type.UserInput;
 
@@ -49,7 +48,7 @@ public class registerActivity extends AppCompatActivity {
         mLandingPageLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent landingpageActivity = new Intent(registerActivity.this, landingpageActivity.class);
+                Intent landingpageActivity = new Intent(registerActivity.this, MainActivity.class);
                 startActivity(landingpageActivity);
             }
         });
@@ -88,7 +87,7 @@ public class registerActivity extends AppCompatActivity {
                         Log.d(TAG, "Response: " + response.data().register());
                         // Correct information
                         if (response.data().register().status()) {
-                            Intent landingpageActivity = new Intent(registerActivity.this, landingpageActivity.class);
+                            Intent landingpageActivity = new Intent(registerActivity.this, MainActivity.class);
                             startActivity(landingpageActivity);
                         } else {
                             mMessage.setText(message);
