@@ -167,7 +167,6 @@ public class RightWithFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-
             }
 
         });

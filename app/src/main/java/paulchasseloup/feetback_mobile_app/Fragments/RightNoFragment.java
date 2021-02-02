@@ -53,6 +53,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Documented;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -119,6 +120,8 @@ public class RightNoFragment extends Fragment {
     volatile boolean stopWorker;
     private TextView bluetoothMsg;
     private String btDeviceName = "ESP32_Feetback";
+
+    private String sensorsAvg[] = new String[5];
 
 
     public static RightNoFragment newInstance() {
@@ -325,8 +328,10 @@ public class RightNoFragment extends Fragment {
                 doc.put("sensor4", this.listSensors4);
                 doc.put("sensor5", this.listSensors5);
 
-                String str = "capteur 1 : "+ this.listSensors1 + "\n capteur 2 : "+ this.listSensors2 +
-                        "\ncapteur 3 : "+ this.listSensors3 + "\n capteur 4 : "+ this.listSensors4;
+
+
+                String str = "capteur 1 : "+ this.sensorsAvg[0] + "\n capteur 2 : "+ this.sensorsAvg[1] +
+                        "\ncapteur 3 : "+ this.sensorsAvg[2] + "\n capteur 4 : "+ this.sensorsAvg[3]+"\ncapteur 5 : " + this.sensorsAvg[4];
 
                 this.timing.setText(str.toString());
 
@@ -415,7 +420,7 @@ public class RightNoFragment extends Fragment {
         mmSocket.connect();
         mmOutputStream = mmSocket.getOutputStream();
         mmInputStream = mmSocket.getInputStream();
-        currentSensor = 1;
+        //currentSensor = 1;
         beginListenForData();
     }
 
@@ -424,25 +429,19 @@ public class RightNoFragment extends Fragment {
      *
      * @param data sensor's reading
      */
-    private void updateSensorList(String data) {
-        switch (currentSensor) {
-            case 2:
-                listSensors2.add(data);
-                break;
-            case 3:
-                listSensors3.add(data);
-                break;
-            case 4:
-                listSensors4.add(data);
-                break;
-            case 5:
-                listSensors5.add(data);
-                break;
-            default:
-                listSensors1.add(data);
-                currentSensor = 1;
+    private void updateSensorList(String data, String sensorNumber) {
+
+        if(sensorNumber.contains("1")){
+            listSensors1.add(data);
+        } else if(sensorNumber.contains("2")){
+            listSensors2.add(data);
+        } else if(sensorNumber.contains("3")){
+            listSensors3.add(data);
+        } else if(sensorNumber.contains("4")){
+            listSensors4.add(data);
+        } else if(sensorNumber.contains("5")){
+            listSensors5.add(data);
         }
-        currentSensor++;
     }
 
     /**
@@ -475,8 +474,12 @@ public class RightNoFragment extends Fragment {
                                     {
                                         public void run()
                                         {
+                                            String[] dataSplit = data.split(":");
+                                            final String loadedData = dataSplit[1];
+                                            String sensorNumber  = dataSplit[0];
+                                            Log.d("in update data $ ", "split = "+dataSplit[0]+ " data $ "+dataSplit[1]);
                                             // save data in corresponding data list
-                                            updateSensorList(data);
+                                            updateSensorList(loadedData, sensorNumber);
                                         }
                                     });
                                 } else {
@@ -525,7 +528,7 @@ public class RightNoFragment extends Fragment {
         //ArrayList<Double> sensorValues = null;
         //ArrayList<Float> sensorValues = null;
         for (String valString : sensors) {
-            double val = Double.parseDouble(valString);
+            double val = Double.parseDouble(valString.toString());
             // Minimum
             if (val < min) {
                 min = val;
@@ -540,21 +543,28 @@ public class RightNoFragment extends Fragment {
             sum += val;
         }
 
+        sum = sum / sensorValues.size();
+        DecimalFormat df = new DecimalFormat("0.00");
          switch (num){
              case 1 :
                  this.listSensors1 = sensors;
+                 this.sensorsAvg[0] = df.format(sum);
                  break;
              case 2 :
                  this.listSensors2 = sensors;
+                 this.sensorsAvg[1] = df.format(sum);
                  break;
              case 3 :
                  this.listSensors3 = sensors;
+                 this.sensorsAvg[2] = df.format(sum);
                  break;
              case 4:
                  this.listSensors4 = sensors;
+                 this.sensorsAvg[3] = df.format(sum);
                  break;
              case 5:
                  this.listSensors5 = sensors;
+                 this.sensorsAvg[4] = df.format(sum);
              default:
                  break;
 
